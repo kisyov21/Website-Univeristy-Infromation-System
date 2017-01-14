@@ -1,0 +1,103 @@
+﻿@model IEnumerable<WebSite.tblDisciplines>
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+@if (Session["CurrentUserPermissionLevel"] != null || (int)Session["CurrentUserPermissionLevel"] == 1)
+{
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title - My ASP.NET Application</title>
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+        @Styles.Render("~/Content/fullcalendarcss")
+
+    </head>
+    <body>
+        <div class="container body-content">
+            <h2>Administration page</h2>
+
+            <table>
+                <tr>
+                    <th>
+                        <a href="@Url.Action("Create", "Disciplines")" class="list-group-item  calendarTab" style="max-width: 250px">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;&nbsp;Create new discipline
+                        </a>
+                    </th>
+                    <th style="padding-left: 5px">
+                        <a href="@Url.Action("Index", "Admin")" class="list-group-item  calendarTab" style="max-width: 250px">
+                            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;Accounts
+                        </a>
+                    </th>
+                    <th style="padding-left: 5px">
+                        <a href="@Url.Action("Index", "Students")" class="list-group-item  calendarTab" style="max-width: 250px">
+                            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;Graduated students
+                        </a>
+                    </th>
+                    <th style="padding-left: 5px">
+                        <a href="@Url.Action("Index", "Home")" class="list-group-item  calendarTab" style="max-width: 250px">
+                            <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>&nbsp;&nbsp;Site
+                        </a>
+                    </th>
+                    <th style="padding-left: 5px">
+                        <a href="@Url.Action("Logout", "Account")" class="list-group-item  calendarTab" style="max-width: 250px">
+                            <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;&nbsp;Log out
+                        </a>
+                    </th>
+                </tr>
+            </table>
+            <br />
+            <h4>Disciplines information</h4>
+            <div style="clear: left; overflow: auto; height: 300px;">
+                <table class="table table-bordered">
+                    <tr>
+                        <th class="col-md-8" style="font-weight:bold">
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th class="col-md-2" style="font-weight:bold">
+                            @Html.DisplayNameFor(model => model.Course)
+                        </th>
+                        <th class="col-md-2">Actions</th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                {
+                        <tr>
+                            <td class="col-md-8">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td class="col-md-2">
+                                @Html.DisplayFor(modelItem => item.Course)
+                            </td>
+                            <td class="col-md-2" style="text-align: right">
+                                <button type="button" class="btn btn-info btn-xs" aria-label="Right Align" onclick="location.href='@Url.Action("Edit", "Disciplines", new { id=item.ID })'">
+                                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;&nbsp;Edit
+                                </button>
+                                <button type="button" class="btn btn-danger btn-xs" aria-label="Right Align" onclick="location.href='@Url.Action("Delete", "Disciplines", new { id=item.ID })'">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;&nbsp;Delete
+                                </button>
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - TU Povdiv</p>
+            </footer>
+        </div>
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/fullcalendarjs")
+        @Scripts.Render("~/bundles/bootstrap")
+    </body>
+</html>
+}
+else
+{
+    @Html.ActionLink("Access denied", "NoPermission", "Home")
+}
+

@@ -1,0 +1,40 @@
+﻿
+@if (Session["CurrentUserID"] != null)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li style="font-size: 15px">
+                <a href="@Url.Action("Calendar", "ScheduleData")"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;Schedule</a>
+            </li>
+            @if ((int)Session["CurrentUserPermissionLevel"] == 1)
+            {
+                <li style="font-size: 15px">
+                    <a href="@Url.Action("Index", "Admin")"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;&nbsp;ADMIN</a>
+                </li>
+            }
+            @if ((int)Session["CurrentUserPermissionLevel"] == 2)
+            {
+                <li style="font-size: 15px">
+                    <a href="@Url.Action("Create", "ScheduleData")" title="Addevent"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;&nbsp;Add Event</a>
+                </li>
+                <li style="font-size: 15px">
+                    <a href="@Url.Action("Edit", "Teachers")" title="Profile"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;Profile</a>
+                </li>
+            }
+            <li style="font-size: 15px">
+                <a href="javascript:document.getElementById('logoutForm').submit()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;&nbsp;Sign out</a>
+            </li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li style="font-size: 15px">
+            <a href="@Url.Action("Login", "Account")"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;&nbsp;Sign in</a>
+        </li>
+    </ul>
+}

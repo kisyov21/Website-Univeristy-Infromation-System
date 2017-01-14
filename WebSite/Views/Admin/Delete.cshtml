@@ -1,0 +1,95 @@
+﻿@model WebSite.tblLogin
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = null;
+}
+
+
+
+
+@if (Session["CurrentUserPermissionLevel"] != null || (int)Session["CurrentUserPermissionLevel"] == 1)
+{
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title - My ASP.NET Application</title>
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+        @Styles.Render("~/Content/fullcalendarcss")
+
+    </head>
+    <body>
+        <div class="container body-content">
+            <h2 style="color:red; font-weight:bold">Delete account</h2>
+
+            <h3>Are you sure you want to delete this account?</h3>
+            <div>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt style="width:200px">
+                        <label class="control-label col-md-8">Login name</label>
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.LoginName)
+                    </dd>
+
+                    <dt style="width:200px">
+                        <label class="control-label col-md-8">Password</label>
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Password)
+                    </dd>
+
+                    <dt style="width:200px">
+                        <label class="control-label col-md-8">Account type</label>
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.PermissionLevel)
+                    </dd>
+
+                    <dt style="width:200px">
+                        <label class="control-label col-md-8">Course</label>
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Course)
+                    </dd>
+                </dl>
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-actions no-color">
+                        <button type="button" class="btn btn-default" aria-label="Left Align" onclick="location.href='@Url.Action("Index", "Disciplines")'">
+                            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;&nbsp;Back
+                        </button> |
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                    </div>
+                }
+            </div>
+
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - TU Povdiv</p>
+            </footer>
+        </div>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/fullcalendarjs")
+        @Scripts.Render("~/bundles/bootstrap")
+    </body>
+</html>
+}
+else
+{
+    @Html.ActionLink("Access denied", "NoPermission", "Home")
+}
+

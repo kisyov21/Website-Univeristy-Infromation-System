@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WebSiteDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tblDiscipline">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblDisciplinesMapping">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TeacherID" Type="int" Nullable="false" />
+    <Property Name="DisciplineID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblLogin">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LoginName" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblNews">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblStudents">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Interests" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Employer" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="JobPosition" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="FacebookAcc" Type="nvarchar" MaxLength="50" />
+    <Property Name="Linkedin" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblTeachers">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Department" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Courses" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Education" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ScientificInterests" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="VisitingHours" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="PhoneNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="PersonalCabinet" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ProfilePicture" Type="image" />
+  </EntityType>
+  <Association Name="FK_tblDisciplinesMapping_tblDiscipline">
+    <End Role="tblDiscipline" Type="Self.tblDiscipline" Multiplicity="1" />
+    <End Role="tblDisciplinesMapping" Type="Self.tblDisciplinesMapping" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblDiscipline">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="tblDisciplinesMapping">
+        <PropertyRef Name="DisciplineID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblDisciplinesMapping_tblTeachers">
+    <End Role="tblTeachers" Type="Self.tblTeachers" Multiplicity="1" />
+    <End Role="tblDisciplinesMapping" Type="Self.tblDisciplinesMapping" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblTeachers">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="tblDisciplinesMapping">
+        <PropertyRef Name="TeacherID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="WebSiteDBModelStoreContainer">
+    <EntitySet Name="tblDiscipline" EntityType="Self.tblDiscipline" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblDisciplinesMapping" EntityType="Self.tblDisciplinesMapping" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblLogin" EntityType="Self.tblLogin" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblNews" EntityType="Self.tblNews" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblStudents" EntityType="Self.tblStudents" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblTeachers" EntityType="Self.tblTeachers" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_tblDisciplinesMapping_tblDiscipline" Association="Self.FK_tblDisciplinesMapping_tblDiscipline">
+      <End Role="tblDiscipline" EntitySet="tblDiscipline" />
+      <End Role="tblDisciplinesMapping" EntitySet="tblDisciplinesMapping" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblDisciplinesMapping_tblTeachers" Association="Self.FK_tblDisciplinesMapping_tblTeachers">
+      <End Role="tblTeachers" EntitySet="tblTeachers" />
+      <End Role="tblDisciplinesMapping" EntitySet="tblDisciplinesMapping" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

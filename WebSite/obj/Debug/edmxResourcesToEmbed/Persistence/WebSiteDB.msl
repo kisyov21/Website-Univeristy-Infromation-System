@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="WebSiteDBModelStoreContainer" CdmEntityContainer="WebSiteDBEntities">
+    <EntitySetMapping Name="tblDiscipline">
+      <EntityTypeMapping TypeName="WebSiteDBModel.tblDiscipline">
+        <MappingFragment StoreEntitySet="tblDiscipline">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblDisciplinesMapping">
+      <EntityTypeMapping TypeName="WebSiteDBModel.tblDisciplinesMapping">
+        <MappingFragment StoreEntitySet="tblDisciplinesMapping">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TeacherID" ColumnName="TeacherID" />
+          <ScalarProperty Name="DisciplineID" ColumnName="DisciplineID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblLogin">
+      <EntityTypeMapping TypeName="WebSiteDBModel.tblLogin">
+        <MappingFragment StoreEntitySet="tblLogin">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblNews">
+      <EntityTypeMapping TypeName="WebSiteDBModel.tblNews">
+        <MappingFragment StoreEntitySet="tblNews">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblStudents">
+      <EntityTypeMapping TypeName="WebSiteDBModel.tblStudents">
+        <MappingFragment StoreEntitySet="tblStudents">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Interests" ColumnName="Interests" />
+          <ScalarProperty Name="Employer" ColumnName="Employer" />
+          <ScalarProperty Name="JobPosition" ColumnName="JobPosition" />
+          <ScalarProperty Name="FacebookAcc" ColumnName="FacebookAcc" />
+          <ScalarProperty Name="Linkedin" ColumnName="Linkedin" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblTeachers">
+      <EntityTypeMapping TypeName="WebSiteDBModel.tblTeachers">
+        <MappingFragment StoreEntitySet="tblTeachers">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="Department" ColumnName="Department" />
+          <ScalarProperty Name="Courses" ColumnName="Courses" />
+          <ScalarProperty Name="Education" ColumnName="Education" />
+          <ScalarProperty Name="ScientificInterests" ColumnName="ScientificInterests" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="VisitingHours" ColumnName="VisitingHours" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="PersonalCabinet" ColumnName="PersonalCabinet" />
+          <ScalarProperty Name="ProfilePicture" ColumnName="ProfilePicture" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

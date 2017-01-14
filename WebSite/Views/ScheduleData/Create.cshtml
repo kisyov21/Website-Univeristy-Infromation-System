@@ -1,0 +1,156 @@
+﻿@model WebSite.tblScheduleData
+@{
+    ViewBag.Title = "Create";
+}
+
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>From here you can easly create upcoming lecture or exercise.</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <label class="control-label col-md-2"> Start: </label>
+            <div class="col-md-10">
+                <div class="input-group" id="datetimepicker" style="max-width:280px;">
+                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2"> End: </label>
+            <div class="col-md-10">
+                <div class="input-group" id="datetimepicker2" style="max-width:280px;">
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2"> Discipline: </label>
+            <div class="col-md-10">
+                <select class="selectpicker" name="discipline" id="selectMe">
+                    @foreach (var item in ViewBag.Disciplines)
+                {
+
+                        <option name="discipline" value="@item.ID"> @item.Name </option>
+
+
+                        @*<input type="checkbox" name="disciplines" value="@item.ID" />    @item.Name
+                            <br />*@
+                    }
+                </select>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Room, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Room, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Room, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Topic, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Topic, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Topic, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FilePath, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FilePath, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FilePath, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.TeacherID, "TeacherID", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("TeacherID", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.TeacherID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DisciplineID, "DisciplineID", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("DisciplineID", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.DisciplineID, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () { // will trigger when the document is ready
+            //$('.datepicker').datepicker(); //Initialise any date pickers
+            $('#selectMe').selectpicker({
+            });
+
+            $("#datetimepicker").datetimepicker(
+                {
+                    //defaultDate: '@Model.StartDate',
+                    showTodayButton: true,
+                    format: 'YYYY-MM-DD HH:mm',
+                    showClose: true,
+                    showClear: true,
+                    toolbarPlacement: 'top',
+                    stepping: 15
+                });
+
+            $("#datetimepicker2").datetimepicker(
+            {
+                //defaultDate: '@Model.StartDate',
+                showTodayButton: true,
+                format: 'YYYY-MM-DD HH:mm',
+                showClose: true,
+                showClear: true,
+                toolbarPlacement: 'top',
+                stepping: 15
+            });
+
+            datetimepicker2
+        });
+    </script>
+}

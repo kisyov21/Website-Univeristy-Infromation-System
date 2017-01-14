@@ -1,0 +1,121 @@
+﻿@model WebSite.ViewModels.TeachersViewModel.TeachersViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+@Scripts.Render("~/Scripts/ViewScripts/editTeacherInfo.js")
+@using (Html.BeginForm("Edit", "Teachers", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ID)
+    <div class="container">
+        @*<h1 class="page-header">Edit Profile</h1>*@
+        <div class="page-header">
+            <input class="btn btn-primary" value="Your disciplines" type="button" onclick="@("window.location.href='" + @Url.Action("Disciplines", "Teachers") + "'");">
+        </div>
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="text-center">
+                    <img src="@Url.Action("GetImage", "Teachers", new { Model.ID })" class="avatar img-circle img-thumbnail" alt="avatar">                    
+                    <h6>Upload a different photo...</h6>
+                    <input type="file" class="text-center center-block well well-sm" accept=".jpeg, .jpg" name="file" id="file" />
+                </div>
+            </div>
+            <!-- edit form column -->
+            <div class="col-md-8 col-sm-6 col-xs-12 personal-info">
+                <div class="alert alert-info alert-dismissable">
+                    <a class="panel-close close" data-dismiss="alert">×</a>
+                    <i class="fa fa-coffee"></i>
+                    For your convenience from here you can easly update your personal information. By clicking the button <strong>Disciplines</strong> you will find out all of the dispilines that you are leading.
+                </div>
+                <h3>Personal info</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label id="editProfile" class="col-lg-3 control-label">First name:</label>
+                        <div class="col-lg-8" style="margin-bottom:5px">
+                            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="editProfile" class="col-lg-3 control-label">Last name:</label>
+                        <div class="col-lg-8" style="margin-bottom:5px">
+                            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="editProfile" class="col-lg-3 control-label">Phone number:</label>
+                        <div class="col-lg-8" style="margin-bottom:5px">
+                            @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="editProfile" class="col-lg-3 control-label">Email:</label>
+                        <div class="col-lg-8" style="margin-bottom:5px">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="editProfile" class="col-lg-3 control-label">Education:</label>
+                        <div class="col-lg-8" style="margin-bottom:5px">
+                            @Html.EditorFor(model => model.Education, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Education, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="editProfile" class="col-lg-3 control-label">Department:</label>
+                        <div class="col-lg-8" style="margin-bottom:5px">
+                            @Html.EditorFor(model => model.Department, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Department, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="editProfile" class="col-lg-3 control-label">Courses:</label>
+                        <div class="col-lg-8" style="margin-bottom:5px">
+                            @Html.EditorFor(model => model.Courses, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Courses, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="editProfile" class="col-lg-3 control-label">Scientific interests:</label>
+                        <div class="col-lg-8" style="margin-bottom:5px">
+                            @Html.EditorFor(model => model.ScientificInterests, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ScientificInterests, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="editProfile" class="col-lg-3 control-label">Visiting hours:</label>
+                        <div class="col-lg-8" style="margin-bottom:5px">
+                            @Html.EditorFor(model => model.VisitingHours, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.VisitingHours, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="editProfile" class="col-lg-3 control-label">Personal cabinet:</label>
+                        <div class="col-lg-8" style="margin-bottom:5px">
+                            @Html.EditorFor(model => model.PersonalCabinet, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PersonalCabinet, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label"></label>
+                        <div class="col-md-8" style="margin-top:5px">
+                            <input class="btn btn-primary" value="Save Changes" type="submit">
+                            <span></span>
+                            <input class="btn btn-default" value="Cancel" type="button" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

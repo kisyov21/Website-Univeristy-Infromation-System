@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "AdminPage";
+}
+
+<style>
+    #background {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+    }
+</style>
+
+<h2>Admin Page</h2>
+<div id="tabs" class="row">
+    <div class="col-sm-3 col-md-2">
+        <ul class="list-group">
+            <li style="list-style:none;">
+                <a href="@Url.Action("Create", "Admin")" class="list-group-item active calendarTab">
+                    <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;Create new account
+                </a>
+            </li>
+            <li style="list-style:none;">
+                <a href="@Url.Action("Edit", "Admin")" class="list-group-item">
+                    <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;Edit accounts
+                </a>
+            </li>          
+        </ul>
+    </div>
+</div>
+<div id="background">
+    <img id="img_logo" alt="Logo" src="@Url.Content("~/Content/Images/admin.png")" />
+</div>

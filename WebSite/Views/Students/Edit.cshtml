@@ -1,0 +1,128 @@
+﻿@model WebSite.tblStudents
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = null;
+}
+
+@if (Session["CurrentUserPermissionLevel"] != null || (int)Session["CurrentUserPermissionLevel"] == 1)
+{
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title - My ASP.NET Application</title>
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+        @Styles.Render("~/Content/fullcalendarcss")
+
+    </head>
+    <body>
+        <div class="container body-content">
+            <h2>Edit student</h2>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <h4>Login</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.ID)
+                    <div class="form-group">
+                        <label class="control-label col-md-2">First name</label>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Last name</label>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Email</label>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Interests</label>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Interests, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Interests, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Current employer</label>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Employer, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Employer, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Job position</label>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.JobPosition, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.JobPosition, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Facebook</label>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.FacebookAcc, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.FacebookAcc, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Linkedin</label>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Linkedin, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Linkedin, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Save" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+            }
+            <div>
+                <button type="button" class="btn btn-default" aria-label="Left Align" onclick="location.href='@Url.Action("Index", "Students")'">
+                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;&nbsp;Back
+                </button>
+            </div>
+
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - TU Povdiv</p>
+            </footer>
+        </div>
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/fullcalendarjs")
+        @Scripts.Render("~/bundles/bootstrap")
+    </body>
+</html>
+
+}
+else
+{
+    @Html.ActionLink("Access denied", "NoPermission", "Home")
+}

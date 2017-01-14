@@ -1,0 +1,49 @@
+﻿body {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-image:url('background/Elegant_Background-7.jpg');
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    /*padding-top: 100px;*/
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+.body-content{
+    height:100px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+.logo{
+    background: url('/Content/Images/logo.png') no-repeat center; 
+    display: block; 
+    height: 55px; 
+    width: 55px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+#editProfile{
+    margin-top: 6px;
+    text-align: right;
+}
+#headerLogo{
+    max-height:50px;
+    padding-right: 6px;
+}
+

@@ -1,0 +1,10 @@
+﻿
+@{
+    ViewBag.Title = "LoggedIn";
+}
+
+@if (Session["CurrentUserID"] != null)
+{
+    <h4>Welcome @ViewBag.Name !</h4>
+}
+
