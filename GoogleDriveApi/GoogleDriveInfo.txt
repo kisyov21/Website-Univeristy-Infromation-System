@@ -1,0 +1,592 @@
+"0Bzf6FvIvJw1hc3RhcnRlcl9maWxl" 
+
+"0ADf6FvIvJw1hUk9PVA" parentID
+
+"0Bzf6FvIvJw1hZjAxR0pleUhvTnc" - university system
+
+
+
+-------------------------------Api.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GoogleApi.Code
+{
+    public class Api
+    {
+        public Authentification Authentification { get; set; }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------ApiMehtods.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GoogleApi
+{
+    public class ApiMethods
+    {
+        public Code.Api api { get; private set; }
+        public bool IsAuthenticated { get { return api.Authentification.IsAuthenticated; } }
+        public string AuthenticationResponse { get { return api.Authentification.AuthenticationResponse; } }
+
+        public ApiMethods() //ref Client.cs Metods = new ApiMethods();
+        {
+            api = new Code.Api();
+            AuthenticateApi();
+        }
+
+        private bool AuthenticateApi()
+        {
+            api.Authentification = new Code.Authentification();
+            api.Authentification.Authenticate();
+            return api.Authentification.IsAuthenticated;
+        }
+    }
+}
+
+
+
+
+
+
+--------------------------------------------------Authentification.cs
+
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Drive.v2;
+using Google.Apis.Services;
+using Google.Apis.Util.Store;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace GoogleApi.Code
+{
+    public class Authentification
+    {
+        internal bool IsAuthenticated { get; set; }
+        internal string AuthenticationResponse { get; set; }
+
+        private string ApiServiceAccount { get; set; }
+        private string ApiPrivateKey { get; set; }
+        public string ApiDriveFolder { get; private set; }
+        public DriveService ApiService { get; private set; }
+
+        private readonly string[] Scopes = new[] { DriveService.Scope.DriveFile, DriveService.Scope.Drive };
+
+        internal Authentification()
+        {
+            IsAuthenticated = false;
+            ApiServiceAccount = ConfigurationManager.AppSettings["GoogleServiceAccount"];
+            ApiPrivateKey = ConfigurationManager.AppSettings["GooglePrivateKey"];
+            ApiDriveFolder = ConfigurationManager.AppSettings["GoogleParentFolder"];
+            //<add key="GoogleServiceAccount" value="dst-637@dst-tool.iam.gserviceaccount.com" />
+            //< add key = "GoogleParentFolder" value = "0B81THbNfE2Uqa0ltOW5GcnB4X2s" />
+            //< add key = "GooglePrivateKey" value = "-----BEGIN PRIVATE KEY-----&#xA;MIIEvgIBADANBgkqhkiG9w0BAQEFAAY-----&#xA;" />
+        }
+
+        internal void Authenticate()
+        {
+            try
+            {
+                AuthenticateServiceAccount(ApiServiceAccount, ApiPrivateKey);
+
+                if (ApiService != null)
+                {
+                    IsAuthenticated = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                AuthenticationResponse = ex.Message;
+            }
+        }
+
+        private void AuthenticateServiceAccount(string serviceAccount, string privateKey)
+        {
+            var credentialInitializer = new ServiceAccountCredential.Initializer(serviceAccount) { Scopes = Scopes }.FromPrivateKey(privateKey);
+
+            ServiceAccountCredential credentials = new ServiceAccountCredential(credentialInitializer);
+
+            ApiService = new DriveService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credentials,
+                ApplicationName = "DST",
+            });
+        }
+    }
+}
+
+
+-------------------------------Client.cs in mvc project
+
+using GoogleApi;
+
+namespace IssueNotes.GoogleApiClient
+{
+    public class ApiClient
+    {
+        public ApiMethods Methods { get; private set; }
+        public ApiClient()
+        {
+            Methods = new ApiMethods();
+        }
+    }
+
+    public static class Client
+    {
+        public static ApiClient New
+        {
+            get
+            {
+                return new ApiClient();
+            }
+        }
+    }
+}
+
+
+
+
+
+-------- GoogleDriveHelper.cs
+
+using Google.Apis.Download;
+using Google.Apis.Drive.v2;
+using Google.Apis.Drive.v2.Data;
+using Google.Apis.Upload;
+using IssueNotes.GoogleApiClient;
+using IssueNotes.WhlObjects;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Web;
+using File = Google.Apis.Drive.v2.Data.File;
+
+namespace IssueNotes.Common
+{
+    public class GoogleDriveHelper
+    {
+        private static GoogleDriveHelper _googleDriveHelper;
+
+        public static GoogleDriveHelper GetGoogleDriveHelper()
+        {
+            if (_googleDriveHelper == null)
+            {
+                _googleDriveHelper = new GoogleDriveHelper();
+            }
+            return _googleDriveHelper;
+        }
+
+        public bool UploadToGoogleDrive(ZipResult zResult, out string errMessage)
+        {
+            errMessage = string.Empty;
+            try
+            {
+                string contentType = "application/zip, application/octet-stream";
+
+                var client = new ApiClient();
+                var authentification = client.Methods.api.Authentification;
+                var service = authentification.ApiService;
+                var title = zResult.ZipPath.Split('\\').Last();
+                var parent = new ParentReference { Id = authentification.ApiDriveFolder };
+                var parents = new List<ParentReference> { parent };
+
+                var fileGD = new File
+                {
+                    Title = title,
+                    MimeType = contentType,
+                    Parents = parents
+                };
+
+                Debug.WriteLine(string.Format("UploadToGoogleDrive - zipPath = {0}", zResult.ZipPath));
+
+                using (var stream = new FileStream(zResult.ZipPath, FileMode.Open))
+                { 
+                    var bytesTotal = stream.Length;
+                    int chunkSize = FilesResource.InsertMediaUpload.MinimumChunkSize * 5; // ~ 1.25 MB
+
+                    var request = service.Files.Insert(fileGD, stream, contentType);
+                    request.ChunkSize = chunkSize;
+
+                    Exception uploadException = null;
+
+                    request.ProgressChanged += (sender) => Upload_ProgressChanged(sender, bytesTotal, uploadException, out uploadException);
+                    //request.ResponseReceived += (sender) => Upload_ResponseReceived(sender, zipRes);
+
+                    request.Upload();
+
+                    if (request.ResponseBody == null)
+                    {
+                        Debug.WriteLine(@"9000. UploadToGoogleDrive Problem- request.accessKey");
+                        errMessage = "UploadToGoogleDrive: No response found!" + (uploadException != null ? uploadException.Message : string.Empty);
+                        Logger.WriteExMessage(errMessage);
+                        return false;
+                    }
+                    else
+                    {
+                        zResult.GoogleDrive_Title = fileGD.Title;
+                        zResult.GoogleDrive_Id = request.ResponseBody.Id;
+                        zResult.GoogleDrive_DownloadUrl = request.ResponseBody.DownloadUrl;
+                        zResult.GoogleDrive_FileSize = request.ResponseBody.FileSize;
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(@"9001. UploadToGoogleDrive Error");
+                errMessage = exception.Message;
+                Logger.WriteEx(exception);
+                return false;
+            }
+
+            Debug.WriteLine(@"9002. UploadToGoogleDrive OK");
+            return true;
+        }
+
+        private static void Upload_ProgressChanged(IUploadProgress progress, long bytesTotal, Exception exxIn, out Exception exx)
+        {
+            exx = null;
+            if (exxIn != null){
+                exx = exxIn;
+                return;
+            }
+            var status = progress.Status.ToString().ToUpper();
+            long bytesRemaining = bytesTotal - progress.BytesSent;
+            Debug.WriteLine(string.Format("{0} - {1} bytes remaining", status, bytesRemaining));
+            if (progress.Exception != null)
+            {
+                exx = progress.Exception;
+                Logger.WriteEx(progress.Exception);
+                Debug.WriteLine(string.Format("{0}", progress.Exception.Message));
+                Debug.WriteLine(string.Format("{0}", progress.Exception.StackTrace));
+            }
+        }
+
+        public bool DeleteZipFromGoogleDrive(ZipResult zipRes, out string errMessage)
+        {
+            bool result = false;
+            errMessage = string.Empty;
+            string googleDriveID = string.Empty;
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(zipRes.GoogleDrive_Id))
+                {
+                    googleDriveID = zipRes.GoogleDrive_Id;
+
+                    var client = new ApiClient();
+                    var service = client.Methods.api.Authentification.ApiService;
+
+                    var request = service.Files.Delete(zipRes.GoogleDrive_Id);
+                    string resultExec = request.Execute();
+                    string resultExec2 = service.Files.EmptyTrash().Execute();
+
+                    result = (string.IsNullOrWhiteSpace(resultExec2));
+                }
+            }
+            catch (Exception exception)
+            {
+                result = false;
+                errMessage = exception.Message;
+                Logger.WriteExMessage(string.Format("ZipResult.GoogleDrive_Id = '{0}'", googleDriveID));
+                Logger.WriteEx(exception);
+            }
+
+            return result;
+        }
+
+
+        //public string DownloadFromGoogleDrive(string outputFileName, string downloadUrl)
+        //{
+        //    string resMessage = string.Empty;
+
+        //    try
+        //    {
+        //        //output = fileName; //@"E:\Misc\Downloads\" + zipRes.GoogleDrive_Title;
+
+        //        if (System.IO.File.Exists(outputFileName))
+        //        {
+        //            System.IO.File.Delete(outputFileName);
+        //        }
+
+        //        var client = new ApiClient();
+        //        var service = client.Methods.api.Authentification.ApiService;
+
+        //        long bytesTotal = 1000000; // zipRes.GoogleDrive_FileSize;
+        //        int chunkSize = FilesResource.InsertMediaUpload.MinimumChunkSize * 10; // ~ 2.5 MB
+
+        //        var downloader = new MediaDownloader(service);
+        //        downloader.ChunkSize = chunkSize;
+
+        //        downloader.ProgressChanged += (sender) => Download_ProgressChanged(sender, bytesTotal);
+
+        //        using (var stream = new FileStream(outputFileName, FileMode.Create, FileAccess.Write))
+        //        {
+        //            var progress = downloader.Download(downloadUrl, stream);
+
+        //            if (progress.Status != DownloadStatus.Completed)
+        //            {
+        //                resMessage = string.Format("Final status is {0}! Not 'Completed'!", progress.Status.ToString());
+        //            }
+        //        }
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        resMessage = exception.Message;
+        //        Logger.WriteEx(exception);
+        //    }
+
+        //    return resMessage;
+        //}
+
+        private void Download_ProgressChanged(IDownloadProgress progress, long? bytesTotal)
+        {
+            var status = progress.Status.ToString().ToUpper();
+            long? bytesRemaining = bytesTotal - progress.BytesDownloaded;
+            Debug.WriteLine(string.Format("{0} - {1} bytes remaining", status, bytesRemaining));
+        }
+
+    }
+}
+
+
+
+--------------ZipConrtoller.cs 
+
+
+using Google.Apis.Download;
+using Google.Apis.Drive.v2;
+using Google.Apis.Drive.v2.Data;
+using Google.Apis.Upload;
+using IssueNotes.GoogleApiClient;
+using IssueNotes.ServerManager;
+using IssueNotes.WhlObjects;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using File = Google.Apis.Drive.v2.Data.File;
+
+namespace IssueNotes.Controllers
+{
+    public class ZipController : Controller
+    {
+        private static ZipResult zipRes;
+
+        [HttpGet]
+        public ActionResult Index()
+        {
+            if (zipRes == null)
+            {
+                zipRes = new ZipResult
+                {
+                    Status = OPStatus.SUCCESS,
+                    Message = string.Empty,
+                    ZipPath = @"E:\Misc\Uploads\AgentSystem.zip",
+                    SourceDirName = @"Uploads",
+                    GoogleDrive_Title = null,
+                    GoogleDrive_Id = null,
+                    GoogleDrive_DownloadUrl = null,
+                    GoogleDrive_FileSize = null
+                };
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Upload()
+        {
+            var result = UploadZipToGoogleDrive(zipRes);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult Download()
+        {
+            var result = DownloadZipFromGoogleDrive(zipRes);
+            return Json("result", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult Delete()
+        {
+            string result = DeleteZipFromGoogleDrive(zipRes);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        private string UploadZipToGoogleDrive(ZipResult zipRes)
+        {
+            try
+            {
+                string contentType = "application/zip, application/octet-stream";
+
+                var client = new ApiClient();
+                var authentification = client.Methods.api.Authentification;
+                var service = authentification.ApiService;
+                var title = zipRes.ZipPath.Split('\\').Last();
+                var parent = new ParentReference { Id = authentification.ApiDriveFolder };
+                var parents = new List<ParentReference> { parent };
+
+                var body = new File
+                {
+                    Title = title,
+                    MimeType = contentType,
+                    Parents = parents
+                };
+
+                using (var stream = new FileStream(zipRes.ZipPath, FileMode.Open))
+                {
+                    var bytesTotal = stream.Length;
+                    int chunkSize = FilesResource.InsertMediaUpload.MinimumChunkSize * 5; // ~ 1.25 MB
+
+                    var request = service.Files.Insert(body, stream, contentType);
+                    request.ChunkSize = chunkSize;
+
+                    request.ProgressChanged += (sender) => Upload_ProgressChanged(sender, bytesTotal);
+                    request.ResponseReceived += (sender) => Upload_ResponseReceived(sender, zipRes);
+
+                    request.Upload();
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.WriteEx(exception);
+                return "FAILED";
+            }
+
+            return "UPLOADED";
+        }
+
+        private static void Upload_ProgressChanged(IUploadProgress progress, long bytesTotal)
+        {
+            var status = progress.Status.ToString().ToUpper();
+            long bytesRemaining = bytesTotal - progress.BytesSent;
+            Debug.WriteLine(string.Format("{0} - {1} bytes remaining", status, bytesRemaining));
+        }
+
+        private static void Upload_ResponseReceived(File file, ZipResult zipRes)
+        {
+            zipRes.GoogleDrive_Title = file.Title;
+            zipRes.GoogleDrive_Id = file.Id;
+            zipRes.GoogleDrive_DownloadUrl = file.DownloadUrl;
+            zipRes.GoogleDrive_FileSize = file.FileSize;
+        }
+
+        private string DownloadZipFromGoogleDrive(ZipResult zipRes)
+        {
+            string output = string.Empty;
+
+            try
+            {
+                output = @"E:\Misc\Downloads\" + zipRes.GoogleDrive_Title;
+
+                if (System.IO.File.Exists(output))
+                {
+                    System.IO.File.Delete(output);
+                }
+
+                var client = new ApiClient();
+                var service = client.Methods.api.Authentification.ApiService;
+
+                var bytesTotal = zipRes.GoogleDrive_FileSize;
+                int chunkSize = FilesResource.InsertMediaUpload.MinimumChunkSize * 10; // ~ 2.5 MB
+
+                var downloader = new MediaDownloader(service);
+                downloader.ChunkSize = chunkSize;
+
+                downloader.ProgressChanged += (sender) => Download_ProgressChanged(sender, bytesTotal);
+
+                using (var stream = new FileStream(output, FileMode.Create, FileAccess.Write))
+                {
+                    var progress = downloader.Download(zipRes.GoogleDrive_DownloadUrl, stream);
+
+                    if (progress.Status != DownloadStatus.Completed)
+                    {
+                        return "FAILED";
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.WriteEx(exception);
+                return "FAILED";
+            }
+
+            return string.Format("SAVED TO {0}", output);
+        }
+
+        private void Download_ProgressChanged(IDownloadProgress progress, long? bytesTotal)
+        {
+            var status = progress.Status.ToString().ToUpper();
+            long? bytesRemaining = bytesTotal - progress.BytesDownloaded;
+            Debug.WriteLine(string.Format("{0} - {1} bytes remaining", status, bytesRemaining));
+        }
+
+        private string DeleteZipFromGoogleDrive(ZipResult zipRes)
+        {
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(zipRes.GoogleDrive_Id))
+                {
+                    var client = new ApiClient();
+                    var service = client.Methods.api.Authentification.ApiService;
+
+                    var request = service.Files.Delete(zipRes.GoogleDrive_Id);
+                    var result = request.Execute();
+
+                    result = service.Files.EmptyTrash().Execute();
+
+                    if (string.IsNullOrWhiteSpace(result))
+                    {
+                        zipRes.GoogleDrive_Title = null;
+                        zipRes.GoogleDrive_Id = null;
+                        zipRes.GoogleDrive_DownloadUrl = null;
+                        zipRes.GoogleDrive_FileSize = null;
+
+                        return "DELETED";
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.WriteEx(exception);
+            }
+
+            return "FAILED";
+        }
+
+    }
+}
+

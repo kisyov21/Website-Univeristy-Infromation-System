@@ -1,0 +1,13 @@
+D:\Repositories\Website-Univeristy-Infromation-System\GoogleApi1\bin\Debug\GoogleApi1.dll
+D:\Repositories\Website-Univeristy-Infromation-System\GoogleApi1\bin\Debug\GoogleApi1.pdb
+D:\Repositories\Website-Univeristy-Infromation-System\GoogleApi1\bin\Debug\Google.Apis.Auth.dll
+D:\Repositories\Website-Univeristy-Infromation-System\GoogleApi1\bin\Debug\Google.Apis.Auth.Mvc4.dll
+D:\Repositories\Website-Univeristy-Infromation-System\GoogleApi1\bin\Debug\Google.Apis.Auth.PlatformServices.dll
+D:\Repositories\Website-Univeristy-Infromation-System\GoogleApi1\bin\Debug\Google.Apis.Core.dll
+D:\Repositories\Website-Univeristy-Infromation-System\GoogleApi1\bin\Debug\Google.Apis.dll
+D:\Repositories\Website-Univeristy-Infromation-System\GoogleApi1\bin\Debug\Google.Apis.Drive.v2.dll
+D:\Repositories\Website-Univeristy-Infromation-System\GoogleApi1\bin\Debug\Google.Apis.PlatformServices.dll
+D:\Repositories\Website-Univeristy-Infromation-System\GoogleApi1\bin\Debug\log4net.dll
+D:\Repositories\Website-Univeristy-Infromation-System\GoogleApi1\obj\Debug\GoogleApi1.csprojResolveAssemblyReference.cache
+D:\Repositories\Website-Univeristy-Infromation-System\GoogleApi1\obj\Debug\GoogleApi1.dll
+D:\Repositories\Website-Univeristy-Infromation-System\GoogleApi1\obj\Debug\GoogleApi1.pdb

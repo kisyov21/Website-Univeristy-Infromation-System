@@ -242,13 +242,16 @@
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Controllers\ScheduleDataController.cs" />
     <Compile Include="Controllers\TeachersController.cs" />
+    <Compile Include="Controllers\ZipController.cs" />
+    <Compile Include="Models\ZipResult.cs" />
     <Compile Include="Core\IUnitOfWork.cs" />
     <Compile Include="Core\Repositories\ILoginRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="GoogleApiClient\Client.cs" />
     <Compile Include="Methods\Crypto.cs" />
-    <Compile Include="Methods\AppFlowMetadata.cs" />
+    <Compile Include="Methods\GoogleService.cs" />
     <Compile Include="Methods\MethodsDB.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -612,7 +615,7 @@
     <Content Include="bin\roslyn\vbc.rsp" />
     <Content Include="bin\roslyn\VBCSCompiler.exe.config" />
     <Content Include="bin\WebSite.dll.config" />
-    <Content Include="client_secret.json" />
+    <Content Include="App_Start\UniversitySystem-c4d16256210d.p12" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
@@ -938,10 +941,14 @@
     <Content Include="Views\ScheduleData\Edit.cshtml" />
     <Content Include="Views\ScheduleData\Index.cshtml" />
     <Content Include="Views\ScheduleData\Calendar.cshtml" />
+    <Content Include="Views\ScheduleData\IndexAsync.cshtml" />
+    <Content Include="UniversitySystem-c4d16256210d.p12" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Common\" />
     <Folder Include="Views\Login\" />
+    <Folder Include="Views\Zip\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -949,6 +956,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GoogleApi1\GoogleApi1.csproj">
+      <Project>{D8B66E90-CFAD-49C3-BC2F-2BBD09C6B3F0}</Project>
+      <Name>GoogleApi1</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

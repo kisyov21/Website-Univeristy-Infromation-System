@@ -15,6 +15,7 @@ using WebSite;
 using WebSite.Methods;
 using WebSite.ViewModels.ScheduleViewModel;
 
+
 namespace WebSite.Controllers
 {
     public class ScheduleDataController : Controller
@@ -150,7 +151,7 @@ namespace WebSite.Controllers
         public ActionResult Calendar()
         {
             return View();
-        }
+        } 
 
         [HttpGet]
         public ActionResult ScheduleCalendar()
@@ -171,8 +172,8 @@ namespace WebSite.Controllers
             sortedData = data.OrderBy(o => o.start).ToList();
             return Json(sortedData, JsonRequestBehavior.AllowGet);
         }
-
-        //public async Task IndexAsync(CancellationToken cancellationToken)
+        //[HttpGet]
+        //public async Task<object> IndexAsync(CancellationToken cancellationToken)
         //{
         //    var result = await new AuthorizationCodeMvcApp(this, new AppFlowMetadata()).
         //        AuthorizeAsync(cancellationToken);
@@ -182,7 +183,7 @@ namespace WebSite.Controllers
         //        var service = new DriveService(new BaseClientService.Initializer
         //        {
         //            HttpClientInitializer = result.Credential,
-        //            ApplicationName = "Web site"
+        //            ApplicationName = "WebSite"
         //        });
 
         //        // YOUR CODE SHOULD BE HERE..
@@ -196,15 +197,6 @@ namespace WebSite.Controllers
         //        return new RedirectResult(result.RedirectUri);
         //    }
         //}
-
-        public class AuthCallbackController : Google.Apis.Auth.OAuth2.Mvc.Controllers.AuthCallbackController
-        {
-            protected override Google.Apis.Auth.OAuth2.Mvc.FlowMetadata FlowData
-            {
-                get { return new AppFlowMetadata(); }
-            }
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
