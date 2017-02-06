@@ -21,6 +21,13 @@ namespace WebSite.ViewModels.ScheduleViewModel
         public string title { get; set; }
         public int? Course { get; set; }
         public string TeacherName { get; set; }
+        public int DisciplineID { get; set; }
+
+        public ScheduleViewModel()
+        {
+
+        }
+
 
         public ScheduleViewModel(DateTime Start, DateTime End, string type, string room, string topic, string filePath, int teacherID, int disciplineID)
         {
@@ -38,6 +45,21 @@ namespace WebSite.ViewModels.ScheduleViewModel
             this.Course = GetCourse(disciplineID);
         }
 
+        public ScheduleViewModel(int id, DateTime Start, DateTime End, string type, string room, string topic, string filePath, int teacherID, int disciplineID)
+        {
+            var isoDateTimeFormat = CultureInfo.InvariantCulture.DateTimeFormat;
+            this.ID = id;
+            this.start = Start.ToString(isoDateTimeFormat.SortableDateTimePattern);
+            this.end = End.ToString(isoDateTimeFormat.SortableDateTimePattern);
+            this.Type = type;
+            this.Room = room;
+            this.Topic = topic;
+            this.FilePath = filePath;
+            this.TeacherID = teacherID;
+            this.DisciplineID = disciplineID;
+        }
+
+       
         private string GetTeacherName(int teacherID)
         {
             string name = "";

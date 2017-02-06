@@ -4,11 +4,8 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Events</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -64,11 +61,16 @@
         <td>
             @Html.DisplayFor(modelItem => item.tblTeachers.FirstName)
         </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+
+        <td class="col-md-2" style="text-align: center">
+            <button type="button" class="btn btn-info btn-xs" aria-label="Right Align" onclick="location.href='@Url.Action("Edit", "ScheduleData", new { id=item.ID })'">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;&nbsp;Edit
+            </button>
+            <button type="button" class="btn btn-danger btn-xs" aria-label="Right Align" onclick="location.href='@Url.Action("Delete", "ScheduleData", new { id=item.ID })'">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;&nbsp;Delete
+            </button>
         </td>
+
     </tr>
 }
 

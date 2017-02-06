@@ -1,10 +1,13 @@
 ﻿using Google.Apis.Auth.OAuth2.Mvc;
 using Google.Apis.Drive.v2;
 using Google.Apis.Services;
+using GoogleApi1;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -83,26 +86,29 @@ namespace WebSite.Controllers
                 return RedirectToAction("Index");
             }
 
-            //ViewBag.DisciplineID = new SelectList(db.tblDisciplines, "ID", "Name", tblScheduleData.DisciplineID);
-            //ViewBag.TeacherID = new SelectList(db.tblTeachers, "ID", "FirstName", tblScheduleData.TeacherID);
+          
             return View(data);
         }
 
         // GET: tblScheduleDatas/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+
+            if (id < 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tblScheduleData tblScheduleData = db.tblScheduleData.Find(id);
-            if (tblScheduleData == null)
+
+            tblScheduleData data = db.tblScheduleData.Find(id);
+            if (data == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.DisciplineID = new SelectList(db.tblDisciplines, "ID", "Name", tblScheduleData.DisciplineID);
-            ViewBag.TeacherID = new SelectList(db.tblTeachers, "ID", "FirstName", tblScheduleData.TeacherID);
-            return View(tblScheduleData);
+            ScheduleViewModel model = new ScheduleViewModel(data.ID, data.StartDate, data.EndDate, data.Type, data.Room, data.Topic, data.FilePath, data.TeacherID, data.DisciplineID);
+
+            ViewBag.DisciplineID = new SelectList(db.tblDisciplines, "ID", "Name", model.DisciplineID);
+            ViewBag.TeacherID = new SelectList(db.tblTeachers, "ID", "FirstName", model.TeacherID);
+            return View(model);
         }
 
         // POST: tblScheduleDatas/Edit/5
@@ -110,17 +116,46 @@ namespace WebSite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,StartDate,EndDate,Type,Room,Topic,FilePath,TeacherID,DisciplineID")] tblScheduleData tblScheduleData)
+        public ActionResult Edit(ScheduleViewModel model, HttpPostedFileBase file)   
         {
             if (ModelState.IsValid)
             {
-                db.Entry(tblScheduleData).State = EntityState.Modified;
-                db.SaveChanges();
+                try
+                {
+                    tblScheduleData data = db.tblScheduleData.Find(model.ID);
+                    var filepath = "";
+                    if (file != null)
+                    {
+                        string path = Path.GetFullPath(file.FileName);
+                        var service = GoogleDrive.NewService();
+                        var response = GoogleDrive.uploadFile(service, path);
+                        filepath = response.Id;
+                        //TODO
+                    }
+                    //if(filepath!="")
+                    //{
+                    //    data.FilePath = filepath;
+                    //}
+                    data.FilePath = filepath;
+                    data.StartDate = Convert.ToDateTime(model.start);
+                    data.EndDate = Convert.ToDateTime(model.end);
+                    data.Type = model.Type;
+                    data.Room = model.Room;
+                    data.Topic = model.Topic;
+
+                    db.Entry(data).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    DateTime currentTime = DateTime.Now;
+                    string _error = ex.ToString();
+                    _error = currentTime + " Exception: " + _error;
+                    var а = _error;
+                }
                 return RedirectToAction("Index");
             }
-            ViewBag.DisciplineID = new SelectList(db.tblDisciplines, "ID", "Name", tblScheduleData.DisciplineID);
-            ViewBag.TeacherID = new SelectList(db.tblTeachers, "ID", "FirstName", tblScheduleData.TeacherID);
-            return View(tblScheduleData);
+            return RedirectToAction("Index");
         }
 
         // GET: tblScheduleDatas/Delete/5
@@ -172,31 +207,7 @@ namespace WebSite.Controllers
             sortedData = data.OrderBy(o => o.start).ToList();
             return Json(sortedData, JsonRequestBehavior.AllowGet);
         }
-        //[HttpGet]
-        //public async Task<object> IndexAsync(CancellationToken cancellationToken)
-        //{
-        //    var result = await new AuthorizationCodeMvcApp(this, new AppFlowMetadata()).
-        //        AuthorizeAsync(cancellationToken);
 
-        //    if (result.Credential != null)
-        //    {
-        //        var service = new DriveService(new BaseClientService.Initializer
-        //        {
-        //            HttpClientInitializer = result.Credential,
-        //            ApplicationName = "WebSite"
-        //        });
-
-        //        // YOUR CODE SHOULD BE HERE..
-        //        // SAMPLE CODE:
-        //        var list = await service.Files.List().ExecuteAsync();
-        //        ViewBag.Message = "FILE COUNT IS: " + list.Items.Count();
-        //        return View();
-        //    }
-        //    else
-        //    {
-        //        return new RedirectResult(result.RedirectUri);
-        //    }
-        //}
         protected override void Dispose(bool disposing)
         {
             if (disposing)

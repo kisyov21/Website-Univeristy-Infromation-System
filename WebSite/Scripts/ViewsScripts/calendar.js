@@ -123,7 +123,7 @@
             //rows += s;
 
             $(".fc-content").each(function () {
-                if ($(".fc-title", $(this)).text() == item.title) {
+                if ($(".fc-title", $(this)).text() == item.title && item.FilePath != null) {
                     $(this)
                     .prepend(
                         $("<span>")
@@ -149,7 +149,7 @@
                                         "<span><b>Topic:</b></span><pre>" + item.Topic + "</pre>" +
                                         "<span><b>Room:</b></span><pre>" + item.Room + "</pre>" +
                                         "<span><b>Teacher:</b></span><pre>" + item.TeacherName + "</pre>" +
-                                        "<span><b>Description:</b></span><pre>" + item.FilePath + "</pre>" +
+                                        "<span><b>File:</b></span><pre><button onclick='myFunction()'>Download</button></pre>" +
                                         "<span><b>Start Time:</b></span><pre>" + item.start + "</pre>" +
                                          "<span><b>End Time:</b></span><pre>" + item.end + "</pre>",
 

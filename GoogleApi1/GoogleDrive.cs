@@ -38,17 +38,18 @@ namespace GoogleApi1
         }
 
 
-        public static File createDirectory(DriveService _service, string _title, string _description, string _parent)
+        public static File createDirectory(DriveService _service, string _title, string _description)
         {
 
             File NewDirectory = null;
-
+            string _parent = "0B6g-9fVqqIureUZZQVhiTzU3UzQ";
             // Create metaData for a new Directory
             File body = new File();
             body.Title = _title;
             body.Description = _description;
             body.MimeType = "application/vnd.google-apps.folder";
-            body.Parents = new List<ParentReference> { new ParentReference() { Id = _parent } };
+            var parent = new ParentReference { Id = _parent };
+            body.Parents = new List<ParentReference> { parent };
             try
             {
                 FilesResource.InsertRequest request = _service.Files.Insert(body);
@@ -80,123 +81,126 @@ namespace GoogleApi1
                 Console.WriteLine("An error occurred: " + e.Message);
             }
         }
-        //private static string GetMimeType(string fileName)
-        //{
-        //    string mimeType = "application/unknown";
-        //    string ext = System.IO.Path.GetExtension(fileName).ToLower();
-        //    Microsoft.Win32.RegistryKey regKey = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey(ext);
-        //    if (regKey != null && regKey.GetValue("Content Type") != null)
-        //        mimeType = regKey.GetValue("Content Type").ToString();
-        //    return mimeType;
-        //}
+        private static string GetMimeType(string fileName)
+        {
+            string mimeType = "application/unknown";
+            string ext = System.IO.Path.GetExtension(fileName).ToLower();
+            Microsoft.Win32.RegistryKey regKey = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey(ext);
+            if (regKey != null && regKey.GetValue("Content Type") != null)
+                mimeType = regKey.GetValue("Content Type").ToString();
+            return mimeType;
+        }
 
-        //public static File uploadFile(DriveService _service, string _uploadFile, string _parent)
-        //{
+        public static File uploadFile(DriveService _service, string uploadFile)
+        {
+            string _parent = "0B6g-9fVqqIureUZZQVhiTzU3UzQ";
+            string _uploadFile = @"E:\License.rtf";
+            if (System.IO.File.Exists(_uploadFile))
+            {
+                File body = new File();
+                body.Title = System.IO.Path.GetFileName(_uploadFile);
+                body.Description = "File uploaded by Technical University Plovdiv";
+                body.MimeType = GetMimeType(_uploadFile);
+                var parent = new ParentReference { Id = _parent };
+                body.Parents = new List<ParentReference> { parent };
+                //body.Parents = new List() { new ParentReference() { Id = _parent } };
 
-        //    if (System.IO.File.Exists(_uploadFile))
-        //    {
-        //        File body = new File();
-        //        body.Title = System.IO.Path.GetFileName(_uploadFile);
-        //        body.Description = "File uploaded by Diamto Drive Sample";
-        //        body.MimeType = GetMimeType(_uploadFile);
-        //        body.Parents = new List() { new ParentReference() { Id = _parent } };
+                // File's content.
+                byte[] byteArray = System.IO.File.ReadAllBytes(_uploadFile);
+                System.IO.MemoryStream stream = new System.IO.MemoryStream(byteArray);
+                try
+                {
+                    FilesResource.InsertMediaUpload request = _service.Files.Insert(body, stream, GetMimeType(_uploadFile));
+                    request.Upload();
+                    return request.ResponseBody;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("An error occurred: " + e.Message);
+                    return null;
+                }
+            }
+            else
+            {
+                Console.WriteLine("File does not exist: " + _uploadFile);
+                return null;
+            }
 
-        //        // File's content.
-        //        byte[] byteArray = System.IO.File.ReadAllBytes(_uploadFile);
-        //        System.IO.MemoryStream stream = new System.IO.MemoryStream(byteArray);
-        //        try
-        //        {
-        //            FilesResource.InsertMediaUpload request = _service.Files.Insert(body, stream, GetMimeType(_uploadFile));
-        //            request.Upload();
-        //            return request.ResponseBody;
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Console.WriteLine("An error occurred: " + e.Message);
-        //            return null;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("File does not exist: " + _uploadFile);
-        //        return null;
-        //    }
+        }
 
-        //}
+        public static File updateFile(DriveService _service, string _uploadFile, string _parent, string _fileId)
+        {
 
-        //public static File updateFile(DriveService _service, string _uploadFile, string _parent, string _fileId)
-        //{
+            if (System.IO.File.Exists(_uploadFile))
+            {
+                File body = new File();
+                body.Title = System.IO.Path.GetFileName(_uploadFile);
+                body.Description = "File updated by Diamto Drive Sample";
+                body.MimeType = GetMimeType(_uploadFile);
+                var parent = new ParentReference { Id = _parent };
+                body.Parents = new List<ParentReference> { parent };
+                // File's content.
+                byte[] byteArray = System.IO.File.ReadAllBytes(_uploadFile);
+                System.IO.MemoryStream stream = new System.IO.MemoryStream(byteArray);
+                try
+                {
+                    FilesResource.UpdateMediaUpload request = _service.Files.Update(body, _fileId, stream, GetMimeType(_uploadFile));
+                    request.Upload();
+                    return request.ResponseBody;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("An error occurred: " + e.Message);
+                    return null;
+                }
+            }
+            else
+            {
+                Console.WriteLine("File does not exist: " + _uploadFile);
+                return null;
+            }
 
-        //    if (System.IO.File.Exists(_uploadFile))
-        //    {
-        //        File body = new File();
-        //        body.Title = System.IO.Path.GetFileName(_uploadFile);
-        //        body.Description = "File updated by Diamto Drive Sample";
-        //        body.MimeType = GetMimeType(_uploadFile);
-        //        body.Parents = new List() { new ParentReference() { Id = _parent } };
+        }
 
-        //        // File's content.
-        //        byte[] byteArray = System.IO.File.ReadAllBytes(_uploadFile);
-        //        System.IO.MemoryStream stream = new System.IO.MemoryStream(byteArray);
-        //        try
-        //        {
-        //            FilesResource.UpdateMediaUpload request = _service.Files.Update(body, _fileId, stream, GetMimeType(_uploadFile));
-        //            request.Upload();
-        //            return request.ResponseBody;
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Console.WriteLine("An error occurred: " + e.Message);
-        //            return null;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("File does not exist: " + _uploadFile);
-        //        return null;
-        //    }
+        public static bool deleteFile(DriveService _service, string _fileId)
+        {
+            bool result;
+            try
+            {
+                FilesResource.DeleteRequest DeleteRequest = _service.Files.Delete(_fileId);
+                DeleteRequest.Execute();
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                result = false;
+            }
+            return result;
+        }
 
-        //}
+        public static Boolean downloadFile(DriveService _service, File _fileResource, string _saveTo)
+        {
 
-        //public static bool deleteFile(DriveService _service, string _fileId)
-        //{
-        //    bool result;
-        //    try
-        //    {
-        //        FilesResource.DeleteRequest DeleteRequest = _service.Files.Delete(_fileId);
-        //        DeleteRequest.Execute();
-        //        result = true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        result = false;
-        //    }
-        //    return result;
-        //}
-
-        //public static Boolean downloadFile(DriveService _service, File _fileResource, string _saveTo)
-        //{
-
-        //    if (!String.IsNullOrEmpty(_fileResource.DownloadUrl))
-        //    {
-        //        try
-        //        {
-        //            var x = _service.HttpClient.GetByteArrayAsync(_fileResource.DownloadUrl);
-        //            byte[] arrBytes = x.Result;
-        //            System.IO.File.WriteAllBytes(_saveTo, arrBytes);
-        //            return true;
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Console.WriteLine("An error occurred: " + e.Message);
-        //            return false;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        // The file doesn't have any content stored on Drive.
-        //        return false;
-        //    }
-        //}
+            if (!String.IsNullOrEmpty(_fileResource.DownloadUrl))
+            {
+                try
+                {
+                    var x = _service.HttpClient.GetByteArrayAsync(_fileResource.DownloadUrl);
+                    byte[] arrBytes = x.Result;
+                    System.IO.File.WriteAllBytes(_saveTo, arrBytes);
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("An error occurred: " + e.Message);
+                    return false;
+                }
+            }
+            else
+            {
+                // The file doesn't have any content stored on Drive.
+                return false;
+            }
+        }
     }
 }

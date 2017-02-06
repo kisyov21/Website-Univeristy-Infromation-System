@@ -74,7 +74,7 @@ namespace WebSite.Controllers
                
                 var service = GoogleDrive.NewService();
                 var title = zipRes.ZipPath.Split('\\').Last();
-                var parent = new ParentReference { Id = "0Bzf6FvIvJw1hZjAxR0pleUhvTnc" };
+                var parent = new ParentReference { Id = "0B6g-9fVqqIureUZZQVhiTzU3UzQ" };
                 var parents = new List<ParentReference> { parent };
 
                 var body = new File
