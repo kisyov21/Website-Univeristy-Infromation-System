@@ -4,6 +4,7 @@
     ViewBag.Title = "Index";
     Layout = null;
 }
+
 @if (Session["CurrentUserPermissionLevel"] != null || (int)Session["CurrentUserPermissionLevel"] == 1)
 {
 
@@ -13,10 +14,10 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>@ViewBag.Title - My ASP.NET Application</title>
+        <link href="@Url.Content("~/Content/serach.css")" rel="stylesheet" type="text/css" />
         @Styles.Render("~/Content/css")
         @Scripts.Render("~/bundles/modernizr")
         @Styles.Render("~/Content/fullcalendarcss")
-
     </head>
     <body>
         <div class="container body-content">
@@ -51,57 +52,64 @@
                 </tr>
             </table>
             <br />
+            
             <h4>Accounts information</h4>
             <div style="clear: left; overflow: auto; height: 300px;">
-                <table class="table table-bordered" style="font-size:14px">
-                    <tr>
-                        <th class="col-md-2" style="text-align:center">
-                            Login
-                        </th>
-                        <th class="col-md-3" style="text-align:center">
-                            Password
-                        </th>
-                        <th class="col-md-3" style="text-align:center">
-                            First name
-                        </th>
-                        <th class="col-md-1" style="text-align:center">
-                            Type
-                        </th>
-                        <th class="col-md-1" style="text-align:center">
-                            Course
-                        </th>
-                        <th class="col-md-2" style="text-align:center"> Actions</th>
-                    </tr>
-
-                    @foreach (var item in Model)
-                {
-                        <tr style="text-align:center">
-                            <td class="col-md-2">
-                                @Html.DisplayFor(modelItem => item.LoginName)
-                            </td>
-                            <td class="col-md-3">
-                                @Html.DisplayFor(modelItem => item.Password)
-                            </td>
-                            <td class="col-md-3">
-                                @Html.DisplayFor(modelItem => item.tblTeachers.FirstName)
-                            </td>
-                            <td class="col-md-1">
-                                @Html.DisplayFor(modelItem => item.PermissionLevel)
-                            </td>
-                            <td class="col-md-1">
-                                @Html.DisplayFor(modelItem => item.Course)
-                            </td>
-                            <td class="col-md-2" style="text-align: center">
-                                <button type="button" class="btn btn-info btn-xs" aria-label="Right Align" onclick="location.href='@Url.Action("Edit", "Admin", new { id=item.ID })'">
-                                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;&nbsp;Edit
-                                </button>
-                                <button type="button" class="btn btn-danger btn-xs" aria-label="Right Align" onclick="location.href='@Url.Action("Delete", "Admin", new { id=item.ID })'">
-                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;&nbsp;Delete
-                                </button>
-                            </td>
+                <div class="form-group pull-right">
+                    <input type="text" class="search form-control" placeholder="What you looking for?">
+                </div>
+                <span class="counter pull-right"></span>
+                <table class="table table-hover table-bordered result" style="font-size:14px">
+                    <thead>
+                        <tr>
+                            <th class="col-md-2" style="text-align:center">
+                                Login
+                            </th>
+                            <th class="col-md-3" style="text-align:center">
+                                Password
+                            </th>
+                            <th class="col-md-3" style="text-align:center">
+                                First name
+                            </th>
+                            <th class="col-md-1" style="text-align:center">
+                                Type
+                            </th>
+                            <th class="col-md-1" style="text-align:center">
+                                Course
+                            </th>
+                            <th class="col-md-2" style="text-align:center"> Actions</th>
                         </tr>
-                    }
-
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                {
+                            <tr style="text-align:center">
+                                <td class="col-md-2">
+                                    @Html.DisplayFor(modelItem => item.LoginName)
+                                </td>
+                                <td class="col-md-3">
+                                    @Html.DisplayFor(modelItem => item.Password)
+                                </td>
+                                <td class="col-md-3">
+                                    @Html.DisplayFor(modelItem => item.tblTeachers.FirstName)
+                                </td>
+                                <td class="col-md-1">
+                                    @Html.DisplayFor(modelItem => item.PermissionLevel)
+                                </td>
+                                <td class="col-md-1">
+                                    @Html.DisplayFor(modelItem => item.Course)
+                                </td>
+                                <td class="col-md-2" style="text-align: center">
+                                    <button type="button" class="btn btn-info btn-xs" aria-label="Right Align" onclick="location.href='@Url.Action("Edit", "Admin", new { id=item.ID })'">
+                                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;&nbsp;Edit
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-xs" aria-label="Right Align" onclick="location.href='@Url.Action("Delete", "Admin", new { id=item.ID })'">
+                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;&nbsp;Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
                 </table>
             </div>
             <hr />
@@ -113,6 +121,8 @@
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/fullcalendarjs")
         @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/searchjs")
+
     </body>
 </html>
 }

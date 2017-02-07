@@ -126,9 +126,8 @@ namespace WebSite.Controllers
                     var filepath = "";
                     if (file != null)
                     {
-                        string path = Path.GetFullPath(file.FileName);
                         var service = GoogleDrive.NewService();
-                        var response = GoogleDrive.uploadFile(service, path);
+                        var response = GoogleDrive.uploadFile(service, file);
                         filepath = response.Id;
                         //TODO
                     }

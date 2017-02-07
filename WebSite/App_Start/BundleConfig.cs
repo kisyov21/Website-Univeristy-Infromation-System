@@ -45,6 +45,8 @@ namespace WebSite
                       "~/Scripts/fullcalendar.min.js",
                       "~/Scripts/ViewsScripts/calendar.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/searchjs").Include(
+                      "~/Scripts/ViewsScripts/search.js"));
         }
     }
 }

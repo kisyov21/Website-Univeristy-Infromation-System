@@ -455,6 +455,8 @@
     <Content Include="Content\Images\admin.png" />
     <Content Include="Content\Images\defaultProfilePicture.png" />
     <Content Include="Content\Images\headerLogo.png" />
+    <Content Include="Content\Images\student.png" />
+    <Content Include="Content\search.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -849,6 +851,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\ViewsScripts\editTeacherInfo.js" />
     <Content Include="Scripts\ViewsScripts\calendar.js" />
+    <Content Include="Scripts\ViewsScripts\search.js" />
     <Content Include="WebSiteDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>WebSiteDB.edmx</DependentUpon>

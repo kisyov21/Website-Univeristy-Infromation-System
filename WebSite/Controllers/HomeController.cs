@@ -8,6 +8,7 @@ namespace WebSite.Controllers
 {
     public class HomeController : Controller
     {
+        private WebSiteDBEntities db = new WebSiteDBEntities();
         public ActionResult Index()
         {
             return View();
@@ -29,9 +30,9 @@ namespace WebSite.Controllers
 
         public ActionResult Students()
         {
-            ViewBag.Message = "Information for the student.";
+            ViewBag.Message = "Information for graduated students.";
 
-            return View();
+            return View(db.tblStudents.ToList());
         }
 
         public ActionResult Calendar()

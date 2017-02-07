@@ -3,75 +3,84 @@
 @{
     ViewBag.Title = "Index";
 }
-
-<h2>Events</h2>
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EndDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Type)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Room)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Topic)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FilePath)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tblDisciplines.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tblTeachers.FirstName)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Type)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Room)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Topic)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FilePath)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.tblDisciplines.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.tblTeachers.FirstName)
-        </td>
-
-        <td class="col-md-2" style="text-align: center">
-            <button type="button" class="btn btn-info btn-xs" aria-label="Right Align" onclick="location.href='@Url.Action("Edit", "ScheduleData", new { id=item.ID })'">
-                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;&nbsp;Edit
-            </button>
-            <button type="button" class="btn btn-danger btn-xs" aria-label="Right Align" onclick="location.href='@Url.Action("Delete", "ScheduleData", new { id=item.ID })'">
-                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;&nbsp;Delete
-            </button>
-        </td>
-
-    </tr>
+@section Scripts
+{
+    @Scripts.Render("~/bundles/searchjs")
 }
+<h2>Events</h2>
+<div class="form-group pull-right">
+    <input type="text" class="search form-control" placeholder="What you looking for?">
+</div>
+<span class="counter pull-right"></span>
+<table class="table table-hover table-bordered results">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Room)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Topic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FilePath)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblDisciplines.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblTeachers.FirstName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Room)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Topic)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FilePath)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tblDisciplines.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tblTeachers.FirstName)
+                </td>
 
+                <td class="col-md-2" style="text-align: center">
+                    <button type="button" class="btn btn-info btn-xs" aria-label="Right Align" onclick="location.href='@Url.Action("Edit", "ScheduleData", new { id=item.ID })'">
+                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;&nbsp;Edit
+                    </button>
+                    <button type="button" class="btn btn-danger btn-xs" aria-label="Right Align" onclick="location.href='@Url.Action("Delete", "ScheduleData", new { id=item.ID })'">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;&nbsp;Delete
+                    </button>
+                </td>
+
+            </tr>
+        }
+    </tbody>
 </table>

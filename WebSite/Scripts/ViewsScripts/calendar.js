@@ -89,6 +89,11 @@
         return ((hour * 60) + minutes);
     }
 
+    function download(fileId)
+    {
+
+    }
+
     function DisplayInfo() {
         $.each(jsonData, function (i, item) {
             var rows = "";
@@ -124,6 +129,7 @@
 
             $(".fc-content").each(function () {
                 if ($(".fc-title", $(this)).text() == item.title && item.FilePath != null) {
+                    var id = item.FilePath;
                     $(this)
                     .prepend(
                         $("<span>")
@@ -149,7 +155,7 @@
                                         "<span><b>Topic:</b></span><pre>" + item.Topic + "</pre>" +
                                         "<span><b>Room:</b></span><pre>" + item.Room + "</pre>" +
                                         "<span><b>Teacher:</b></span><pre>" + item.TeacherName + "</pre>" +
-                                        "<span><b>File:</b></span><pre><button onclick='myFunction()'>Download</button></pre>" +
+                                        "<span><b>File:</b></span><pre><button onclick='download(" + id + ")'>Download</button></pre>" +
                                         "<span><b>Start Time:</b></span><pre>" + item.start + "</pre>" +
                                          "<span><b>End Time:</b></span><pre>" + item.end + "</pre>",
 

@@ -4,10 +4,12 @@ using Google.Apis.Drive.v2.Data;
 using Google.Apis.Services;
 using System;
 using System.Collections.Generic;
+
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace GoogleApi1
 {
@@ -81,70 +83,76 @@ namespace GoogleApi1
                 Console.WriteLine("An error occurred: " + e.Message);
             }
         }
-        private static string GetMimeType(string fileName)
+        private static string GetMimeType(HttpPostedFileBase upload)
         {
             string mimeType = "application/unknown";
-            string ext = System.IO.Path.GetExtension(fileName).ToLower();
+            string ext = System.IO.Path.GetExtension(upload.FileName).ToLower();
             Microsoft.Win32.RegistryKey regKey = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey(ext);
             if (regKey != null && regKey.GetValue("Content Type") != null)
                 mimeType = regKey.GetValue("Content Type").ToString();
             return mimeType;
         }
 
-        public static File uploadFile(DriveService _service, string uploadFile)
+        public static File uploadFile(DriveService _service, HttpPostedFileBase upload)
         {
             string _parent = "0B6g-9fVqqIureUZZQVhiTzU3UzQ";
-            string _uploadFile = @"E:\License.rtf";
-            if (System.IO.File.Exists(_uploadFile))
+            //string _uploadFile = @"E:\License.rtf";
+            if (upload != null)
             {
                 File body = new File();
-                body.Title = System.IO.Path.GetFileName(_uploadFile);
+                body.Title = upload.FileName;
                 body.Description = "File uploaded by Technical University Plovdiv";
-                body.MimeType = GetMimeType(_uploadFile);
+                body.MimeType = GetMimeType(upload);
                 var parent = new ParentReference { Id = _parent };
                 body.Parents = new List<ParentReference> { parent };
                 //body.Parents = new List() { new ParentReference() { Id = _parent } };
 
                 // File's content.
-                byte[] byteArray = System.IO.File.ReadAllBytes(_uploadFile);
+
+                System.IO.BinaryReader reader = new System.IO.BinaryReader(upload.InputStream);
+                byte[] byteArray = reader.ReadBytes((int)upload.ContentLength);
                 System.IO.MemoryStream stream = new System.IO.MemoryStream(byteArray);
                 try
                 {
-                    FilesResource.InsertMediaUpload request = _service.Files.Insert(body, stream, GetMimeType(_uploadFile));
+                    FilesResource.InsertMediaUpload request = _service.Files.Insert(body, stream, GetMimeType(upload));
                     request.Upload();
                     return request.ResponseBody;
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("An error occurred: " + e.Message);
+                    //Console.WriteLine("An error occurred: " + e.Message);
                     return null;
                 }
             }
             else
             {
-                Console.WriteLine("File does not exist: " + _uploadFile);
+                //Console.WriteLine("File does not exist: " + _uploadFile);
                 return null;
             }
 
         }
 
-        public static File updateFile(DriveService _service, string _uploadFile, string _parent, string _fileId)
+        public static File updateFile(DriveService _service, HttpPostedFileBase upload, string _fileId)
         {
-
-            if (System.IO.File.Exists(_uploadFile))
+            string _parent = "0B6g-9fVqqIureUZZQVhiTzU3UzQ";
+            if (upload != null)
             {
                 File body = new File();
-                body.Title = System.IO.Path.GetFileName(_uploadFile);
-                body.Description = "File updated by Diamto Drive Sample";
-                body.MimeType = GetMimeType(_uploadFile);
+                body.Title = upload.FileName;
+                body.Description = "File uploaded by Technical University Plovdiv";
+                body.MimeType = GetMimeType(upload);
                 var parent = new ParentReference { Id = _parent };
                 body.Parents = new List<ParentReference> { parent };
+                //body.Parents = new List() { new ParentReference() { Id = _parent } };
+
                 // File's content.
-                byte[] byteArray = System.IO.File.ReadAllBytes(_uploadFile);
+
+                System.IO.BinaryReader reader = new System.IO.BinaryReader(upload.InputStream);
+                byte[] byteArray = reader.ReadBytes((int)upload.ContentLength);
                 System.IO.MemoryStream stream = new System.IO.MemoryStream(byteArray);
                 try
                 {
-                    FilesResource.UpdateMediaUpload request = _service.Files.Update(body, _fileId, stream, GetMimeType(_uploadFile));
+                    FilesResource.UpdateMediaUpload request = _service.Files.Update(body, _fileId, stream, GetMimeType(upload));
                     request.Upload();
                     return request.ResponseBody;
                 }
@@ -156,7 +164,7 @@ namespace GoogleApi1
             }
             else
             {
-                Console.WriteLine("File does not exist: " + _uploadFile);
+                Console.WriteLine("File does not exist: " + upload);
                 return null;
             }
 
