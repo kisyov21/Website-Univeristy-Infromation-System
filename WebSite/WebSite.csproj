@@ -243,6 +243,9 @@
     <Compile Include="Controllers\ScheduleDataController.cs" />
     <Compile Include="Controllers\TeachersController.cs" />
     <Compile Include="Controllers\ZipController.cs" />
+    <Compile Include="GoogleDriveFiles.cs">
+      <DependentUpon>WebSiteDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ZipResult.cs" />
     <Compile Include="Core\IUnitOfWork.cs" />
     <Compile Include="Core\Repositories\ILoginRepository.cs" />
@@ -851,6 +854,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\ViewsScripts\editTeacherInfo.js" />
     <Content Include="Scripts\ViewsScripts\calendar.js" />
+    <Content Include="Scripts\ViewsScripts\GoogleMapsScript.js" />
     <Content Include="Scripts\ViewsScripts\search.js" />
     <Content Include="WebSiteDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

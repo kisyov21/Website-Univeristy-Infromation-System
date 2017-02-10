@@ -29,10 +29,10 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li>@Html.ActionLink(" ", "Index", "Home", new { @class = "logo" })</li>
-                        <li class="nav-text">@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li class="nav-text">@Html.ActionLink("About", "About", "Home")</li>
-                        <li class="nav-text">@Html.ActionLink("Students", "Students", "Home")</li>
-                        <li class="nav-text">@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        <li><a href="@Url.Action("Index", "Home")" title="Addevent"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;&nbsp;Home</a></li>
+                        <li><a href="@Url.Action("Students", "Home")" title="Addevent"><span class="glyphicon glyphicon-education" aria-hidden="true"></span>&nbsp;&nbsp;Be one of us</a></li>
+                        <li><a href="@Url.Action("About", "Home")" title="Addevent"><span class="glyphicon glyphicon-tower" aria-hidden="true"></span>&nbsp;&nbsp;About</a></li>
+                        <li><a href="@Url.Action("Contact", "Home")" title="Addevent"><span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span>&nbsp;&nbsp;Contact</a></li>
                     </ul>
                     @Html.Partial("_LoginPartial")
                 </div>

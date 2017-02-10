@@ -32,5 +32,6 @@ namespace WebSite
         public virtual DbSet<tblDisciplinesMapping> tblDisciplinesMapping { get; set; }
         public virtual DbSet<tblTeachers> tblTeachers { get; set; }
         public virtual DbSet<tblScheduleData> tblScheduleData { get; set; }
+        public virtual DbSet<GoogleDriveFiles> GoogleDriveFiles { get; set; }
     }
 }

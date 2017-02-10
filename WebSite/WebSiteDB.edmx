@@ -5,6 +5,17 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="WebSiteDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="GoogleDriveFiles">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="GoogleDrive_ID" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DownloadURL" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="EventID" Type="int" Nullable="false" />
+          <Property Name="FileSize" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
         <EntityType Name="tblDisciplines">
           <Key>
             <PropertyRef Name="ID" />
@@ -86,6 +97,18 @@
           <Property Name="PersonalCabinet" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ProfilePicture" Type="image" />
         </EntityType>
+        <Association Name="FK_GoogleDriveFiles_tblScheduleData">
+          <End Role="tblScheduleData" Type="Self.tblScheduleData" Multiplicity="1" />
+          <End Role="GoogleDriveFiles" Type="Self.GoogleDriveFiles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblScheduleData">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GoogleDriveFiles">
+              <PropertyRef Name="EventID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblDisciplinesMapping_tblDisciplines">
           <End Role="tblDisciplines" Type="Self.tblDisciplines" Multiplicity="1" />
           <End Role="tblDisciplinesMapping" Type="Self.tblDisciplinesMapping" Multiplicity="*" />
@@ -147,6 +170,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="WebSiteDBModelStoreContainer">
+          <EntitySet Name="GoogleDriveFiles" EntityType="Self.GoogleDriveFiles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblDisciplines" EntityType="Self.tblDisciplines" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblDisciplinesMapping" EntityType="Self.tblDisciplinesMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblLogin" EntityType="Self.tblLogin" Schema="dbo" store:Type="Tables" />
@@ -154,6 +178,10 @@
           <EntitySet Name="tblScheduleData" EntityType="Self.tblScheduleData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblStudents" EntityType="Self.tblStudents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTeachers" EntityType="Self.tblTeachers" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_GoogleDriveFiles_tblScheduleData" Association="Self.FK_GoogleDriveFiles_tblScheduleData">
+            <End Role="tblScheduleData" EntitySet="tblScheduleData" />
+            <End Role="GoogleDriveFiles" EntitySet="GoogleDriveFiles" />
+          </AssociationSet>
           <AssociationSet Name="FK_tblDisciplinesMapping_tblDisciplines" Association="Self.FK_tblDisciplinesMapping_tblDisciplines">
             <End Role="tblDisciplines" EntitySet="tblDisciplines" />
             <End Role="tblDisciplinesMapping" EntitySet="tblDisciplinesMapping" />
@@ -240,6 +268,11 @@
           <AssociationSet Name="FK_tblScheduleData_tblTeachers" Association="WebSiteDBModel.FK_tblScheduleData_tblTeachers">
             <End Role="tblTeachers" EntitySet="tblTeachers" />
             <End Role="tblScheduleData" EntitySet="tblScheduleData" />
+          </AssociationSet>
+          <EntitySet Name="GoogleDriveFiles" EntityType="WebSiteDBModel.GoogleDriveFiles" />
+          <AssociationSet Name="FK_GoogleDriveFiles_tblScheduleData" Association="WebSiteDBModel.FK_GoogleDriveFiles_tblScheduleData">
+            <End Role="tblScheduleData" EntitySet="tblScheduleData" />
+            <End Role="GoogleDriveFiles" EntitySet="GoogleDriveFiles" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="tblDisciplines">
@@ -334,6 +367,7 @@
           <Property Name="DisciplineID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="tblDisciplines" Relationship="WebSiteDBModel.FK_tblScheduleData_tblDisciplines" FromRole="tblScheduleData" ToRole="tblDisciplines" />
           <NavigationProperty Name="tblTeachers" Relationship="WebSiteDBModel.FK_tblScheduleData_tblTeachers" FromRole="tblScheduleData" ToRole="tblTeachers" />
+          <NavigationProperty Name="GoogleDriveFiles" Relationship="WebSiteDBModel.FK_GoogleDriveFiles_tblScheduleData" FromRole="tblScheduleData" ToRole="GoogleDriveFiles" />
         </EntityType>
         <Association Name="FK_tblScheduleData_tblDisciplines">
           <End Type="WebSiteDBModel.tblDisciplines" Role="tblDisciplines" Multiplicity="1" />
@@ -356,6 +390,30 @@
             </Principal>
             <Dependent Role="tblScheduleData">
               <PropertyRef Name="TeacherID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="GoogleDriveFiles">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="GoogleDrive_ID" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DownloadURL" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EventID" Type="Int32" Nullable="false" />
+          <Property Name="FileSize" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblScheduleData" Relationship="WebSiteDBModel.FK_GoogleDriveFiles_tblScheduleData" FromRole="GoogleDriveFiles" ToRole="tblScheduleData" />
+        </EntityType>
+        <Association Name="FK_GoogleDriveFiles_tblScheduleData">
+          <End Type="WebSiteDBModel.tblScheduleData" Role="tblScheduleData" Multiplicity="1" />
+          <End Type="WebSiteDBModel.GoogleDriveFiles" Role="GoogleDriveFiles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblScheduleData">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GoogleDriveFiles">
+              <PropertyRef Name="EventID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -449,6 +507,18 @@
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GoogleDriveFiles">
+            <EntityTypeMapping TypeName="WebSiteDBModel.GoogleDriveFiles">
+              <MappingFragment StoreEntitySet="GoogleDriveFiles">
+                <ScalarProperty Name="FileSize" ColumnName="FileSize" />
+                <ScalarProperty Name="EventID" ColumnName="EventID" />
+                <ScalarProperty Name="DownloadURL" ColumnName="DownloadURL" />
+                <ScalarProperty Name="GoogleDrive_ID" ColumnName="GoogleDrive_ID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

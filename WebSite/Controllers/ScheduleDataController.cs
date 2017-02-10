@@ -2,6 +2,7 @@
 using Google.Apis.Drive.v2;
 using Google.Apis.Services;
 using GoogleApi1;
+using GoogleApi1.Code;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -123,19 +124,23 @@ namespace WebSite.Controllers
                 try
                 {
                     tblScheduleData data = db.tblScheduleData.Find(model.ID);
-                    var filepath = "";
+                    GoogleDriveFiles newFile = new GoogleDriveFiles();
+                    var title = "";
                     if (file != null)
                     {
                         var service = GoogleDrive.NewService();
                         var response = GoogleDrive.uploadFile(service, file);
-                        filepath = response.Id;
-                        //TODO
+                        title = response.Title;
+                        newFile.GoogleDrive_ID = response.Id;
+                        newFile.EventID = model.ID;
+                        newFile.Title = response.Title;
+                        newFile.DownloadURL = response.DownloadUrl;
+                        newFile.FileSize = response.FileSize.ToString();
+                        db.GoogleDriveFiles.Add(newFile);
+
                     }
-                    //if(filepath!="")
-                    //{
-                    //    data.FilePath = filepath;
-                    //}
-                    data.FilePath = filepath;
+
+                    data.FilePath = title;
                     data.StartDate = Convert.ToDateTime(model.start);
                     data.EndDate = Convert.ToDateTime(model.end);
                     data.Type = model.Type;
@@ -187,6 +192,31 @@ namespace WebSite.Controllers
             return View();
         } 
 
+        public ActionResult Download(int eventID)
+        {
+            
+            bool result = false;
+            if (eventID >=0)
+            {
+                try
+                {
+                    GoogleDriveFiles googleDriveFile = db.GoogleDriveFiles.Where(g => g.EventID == eventID).FirstOrDefault();
+                    GoogleDriveFile file = new GoogleDriveFile(googleDriveFile.Title, googleDriveFile.GoogleDrive_ID, googleDriveFile.DownloadURL, googleDriveFile.FileSize);
+                    string output = Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+                    var service = GoogleDrive.NewService();
+                    var response = GoogleDrive.downloadFile(service, file, output);
+                    result = true;
+                    //TODO
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         public ActionResult ScheduleCalendar()
         {
@@ -200,7 +230,7 @@ namespace WebSite.Controllers
 
             foreach (var item in dataTemp)
             {
-                ScheduleViewModel temp = new ScheduleViewModel(item.StartDate, item.EndDate, item.Type, item.Room, item.Topic, item.FilePath, item.TeacherID, item.DisciplineID);
+                ScheduleViewModel temp = new ScheduleViewModel(item.ID,item.StartDate, item.EndDate, item.Type, item.Room, item.Topic, item.FilePath, item.TeacherID, item.DisciplineID);
                 data.Add(temp);
             }
             sortedData = data.OrderBy(o => o.start).ToList();

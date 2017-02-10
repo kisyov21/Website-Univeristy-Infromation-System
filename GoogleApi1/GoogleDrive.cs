@@ -2,6 +2,7 @@
 using Google.Apis.Drive.v2;
 using Google.Apis.Drive.v2.Data;
 using Google.Apis.Services;
+using GoogleApi1.Code;
 using System;
 using System.Collections.Generic;
 
@@ -186,14 +187,14 @@ namespace GoogleApi1
             return result;
         }
 
-        public static Boolean downloadFile(DriveService _service, File _fileResource, string _saveTo)
+        public static Boolean downloadFile(DriveService _service, GoogleDriveFile _fileResource, string _saveTo)
         {
 
-            if (!String.IsNullOrEmpty(_fileResource.DownloadUrl))
+            if (!String.IsNullOrEmpty(_fileResource.DownloadURL))
             {
                 try
                 {
-                    var x = _service.HttpClient.GetByteArrayAsync(_fileResource.DownloadUrl);
+                    var x = _service.HttpClient.GetByteArrayAsync(_fileResource.DownloadURL);
                     byte[] arrBytes = x.Result;
                     System.IO.File.WriteAllBytes(_saveTo, arrBytes);
                     return true;

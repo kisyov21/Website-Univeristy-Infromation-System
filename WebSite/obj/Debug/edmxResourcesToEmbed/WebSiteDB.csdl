@@ -62,6 +62,11 @@
       <End Role="tblTeachers" EntitySet="tblTeachers" />
       <End Role="tblScheduleData" EntitySet="tblScheduleData" />
     </AssociationSet>
+    <EntitySet Name="GoogleDriveFiles" EntityType="WebSiteDBModel.GoogleDriveFiles" />
+    <AssociationSet Name="FK_GoogleDriveFiles_tblScheduleData" Association="WebSiteDBModel.FK_GoogleDriveFiles_tblScheduleData">
+      <End Role="tblScheduleData" EntitySet="tblScheduleData" />
+      <End Role="GoogleDriveFiles" EntitySet="GoogleDriveFiles" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="tblDisciplines">
     <Key>
@@ -155,6 +160,7 @@
     <Property Name="DisciplineID" Type="Int32" Nullable="false" />
     <NavigationProperty Name="tblDisciplines" Relationship="WebSiteDBModel.FK_tblScheduleData_tblDisciplines" FromRole="tblScheduleData" ToRole="tblDisciplines" />
     <NavigationProperty Name="tblTeachers" Relationship="WebSiteDBModel.FK_tblScheduleData_tblTeachers" FromRole="tblScheduleData" ToRole="tblTeachers" />
+    <NavigationProperty Name="GoogleDriveFiles" Relationship="WebSiteDBModel.FK_GoogleDriveFiles_tblScheduleData" FromRole="tblScheduleData" ToRole="GoogleDriveFiles" />
   </EntityType>
   <Association Name="FK_tblScheduleData_tblDisciplines">
     <End Type="WebSiteDBModel.tblDisciplines" Role="tblDisciplines" Multiplicity="1" />
@@ -177,6 +183,30 @@
       </Principal>
       <Dependent Role="tblScheduleData">
         <PropertyRef Name="TeacherID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="GoogleDriveFiles">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="GoogleDrive_ID" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DownloadURL" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="EventID" Type="Int32" Nullable="false" />
+    <Property Name="FileSize" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tblScheduleData" Relationship="WebSiteDBModel.FK_GoogleDriveFiles_tblScheduleData" FromRole="GoogleDriveFiles" ToRole="tblScheduleData" />
+  </EntityType>
+  <Association Name="FK_GoogleDriveFiles_tblScheduleData">
+    <End Type="WebSiteDBModel.tblScheduleData" Role="tblScheduleData" Multiplicity="1" />
+    <End Type="WebSiteDBModel.GoogleDriveFiles" Role="GoogleDriveFiles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblScheduleData">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="GoogleDriveFiles">
+        <PropertyRef Name="EventID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

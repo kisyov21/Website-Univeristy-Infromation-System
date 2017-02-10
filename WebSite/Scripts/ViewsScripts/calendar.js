@@ -88,9 +88,32 @@
         var minutes = parseInt(arr_time[1]);
         return ((hour * 60) + minutes);
     }
+    function submitReportHandler() {
+        $(".downloadBtn").onclick = function () {
+            var fileID = $(this).attr('value');
+            download(fileID);
+        }
+    }
 
-    function download(fileId)
-    {
+    function download(fileId) {
+        $.ajax({
+            url: "/ScheduleData/Download",
+            contentType: "application/json; charset=utf-8",
+            type: 'GET',
+            data: { eventID: fileId },
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    bootbox.alert('The file was downloaded successfully :)');
+                }
+            },
+            error: function (data) {
+                bootbox.alert('The file was not downloaded successfully :(');
+            },
+            fail: function (data) {
+                bootbox.alert('The file was not downloaded successfully :(');
+            }
+        });
 
     }
 
@@ -103,33 +126,10 @@
             var unSuccNum = 0;
             var froStat = 0;
             var condition = "";
-            //collecting data for displaying
-
-            //var b = '<button  style="border-radius:20px;margin-left: 21px;margin-top: -8px;" class="glyphicon glyphicon-eye-open btn-sxs btn btn-info" type=button onclick=sheduler.changs(' + whl.ID + ')></button> '
-
-            //var s = (function () {
-            //    //prod i deploy
-            //    if (item.actionId == 0 && item.deploy == 1) {
-            //        return '<tr><td style="font-size:80%;">' + whl.ID + '</td><td style="font-size:80%;">' + whl.whl + '</td><td style="font-size:80%;text-align:center"> <a href="/WHLInfo/' + whl.ID + '" target="_blank"> <font size="1.8px">Details</font>  </a> </td><td style="font-size:80%;text-align:center">' + depStat + '</td><td>' + b + '</td></tr>';
-            //    }
-            //    //neprod i deplu
-            //    if (item.actionId != 0 && item.deploy == 1) {
-            //        return '<tr><td style="font-size:80%;">' + whl.ID + '</td><td style="font-size:80%;">' + whl.whl + '</td><td style="font-size:80%;text-align:center"> <a href="/WHLInfo/' + whl.ID + '" target="_blank"> <font size="1.8px">Details</font> </a> </td><td style="font-size:80%;text-align:center">' + depStat + '</td><td>' + '</td></tr>';
-            //    }
-            //    // pord i nedeploy
-            //    if (item.deploy == 0 && item.actionId == 0) {
-            //        return '<tr><td style="font-size:80%;">' + whl.ID + '</td><td style="font-size:80%;">' + whl.whl + '</td><td style="font-size:80%;text-align:center"> Details </td><td style="font-size:80%;text-align:center">' + depStat + '</td><td>' + b + '</td></tr>';
-            //    }
-
-            //    return '<tr><td style="font-size:80%;">' + whl.ID + '</td><td style="font-size:80%;">' + whl.whl + '</td><td style="font-size:80%;text-align:center"> Details </td><td style="font-size:80%;text-align:center">' + depStat + '</td><td>' + '</td></tr>';
-
-            //}).call();
-
-            //rows += s;
 
             $(".fc-content").each(function () {
                 if ($(".fc-title", $(this)).text() == item.title && item.FilePath != null) {
-                    var id = item.FilePath;
+                    var id = item.id;
                     $(this)
                     .prepend(
                         $("<span>")
@@ -137,32 +137,24 @@
                             .css("margin-top", "2px").css("margin-right", "4px").css("float", "right")
                             .click(function () {
                                 bootbox.dialog({
-                                    title: "Discipline: " + item.title + "'",
+                                    title: "Discipline: " + item.title + "",
                                     message:
                                         "<span><b>Type:</b></span><pre>" + item.Type + "</pre>" +
-                                        //"<span><b>Information</b></span>" +                              TABLICATAAA
-                                        //'<div style="max-height:200px;overflow:auto;">' +
-                                        //'<table style="border-collapse:collapse;"class="table table-striped table-hover table-condensed">' + "<tr>" +
-                                        //"<th>" + "ID" + "</th>" +
-                                        //"<th>" + "WHL" + "</th>" +
-                                        //"<th>" + "Link" + "</th>" +
-                                        //"<th>" + "Status" + "</th>" +
-                                        //"<th>" + "Compare" + "</th>" + "</tr>" +
-                                        //rows +
-                                        //"</table>" +
-                                        //'</div>' +
-
                                         "<span><b>Topic:</b></span><pre>" + item.Topic + "</pre>" +
                                         "<span><b>Room:</b></span><pre>" + item.Room + "</pre>" +
                                         "<span><b>Teacher:</b></span><pre>" + item.TeacherName + "</pre>" +
-                                        "<span><b>File:</b></span><pre><button onclick='download(" + id + ")'>Download</button></pre>" +
                                         "<span><b>Start Time:</b></span><pre>" + item.start + "</pre>" +
-                                         "<span><b>End Time:</b></span><pre>" + item.end + "</pre>",
-
+                                         "<span><b>End Time:</b></span><pre>" + item.end + "</pre>" +
+                                        "<span><b>File:</b></span><pre>" + item.FilePath + "</pre>",
+                                    //onclick='download(" + id + ")
                                     className: "shedulerClass",
 
                                     buttons: {
-
+                                        download: {
+                                            label: "Download", className: "btn-default Download pull-left", callback: function () {
+                                                download(item.ID);
+                                            }
+                                        },
                                         success: {
                                             label: "Teacher profile", className: "btn-success btn-edit", callback: function () { return dsUtil.onEditClick(item); }
                                         }
@@ -178,6 +170,10 @@
     return {
         initCalendar: function () {
             loadCalendar();
+            submitReportHandler()
+        },
+        download: function (fileID) {
+            download(fileID)
         }
     }
 }

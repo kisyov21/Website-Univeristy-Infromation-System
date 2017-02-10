@@ -14,6 +14,12 @@ namespace WebSite
     
     public partial class tblScheduleData
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public tblScheduleData()
+        {
+            this.GoogleDriveFiles = new HashSet<GoogleDriveFiles>();
+        }
+    
         public int ID { get; set; }
         public System.DateTime StartDate { get; set; }
         public System.DateTime EndDate { get; set; }
@@ -26,5 +32,7 @@ namespace WebSite
     
         public virtual tblDisciplines tblDisciplines { get; set; }
         public virtual tblTeachers tblTeachers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<GoogleDriveFiles> GoogleDriveFiles { get; set; }
     }
 }

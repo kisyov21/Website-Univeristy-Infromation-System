@@ -1,9 +1,18 @@
 ﻿@{
     ViewBag.Title = "Contact";
 }
+@section scripts{
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="~/Scripts/ViewsScripts/GoogleMapsScript.js"></script>
+}
+
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
 
+<div id="map_canvas" style="width: 640px; height: 440px; float:right;">
+    <meta name="referrer" content="no-referrer">
+</div>
 <address>
     One Microsoft Way<br />
     Redmond, WA 98052-6399<br />

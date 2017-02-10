@@ -17,6 +17,8 @@
         <EntityTypeShape EntityType="WebSiteDBModel.tblScheduleData" Width="1.5" PointX="6.375" PointY="4.125" />
         <AssociationConnector Association="WebSiteDBModel.FK_tblScheduleData_tblDisciplines" />
         <AssociationConnector Association="WebSiteDBModel.FK_tblScheduleData_tblTeachers" />
+        <EntityTypeShape EntityType="WebSiteDBModel.GoogleDriveFiles" Width="1.5" PointX="9.125" PointY="4.75" />
+        <AssociationConnector Association="WebSiteDBModel.FK_GoogleDriveFiles_tblScheduleData" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
