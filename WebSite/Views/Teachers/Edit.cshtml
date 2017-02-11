@@ -9,7 +9,7 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.ID)
-    <div class="container">
+    <div class="container fontTU">
         @*<h1 class="page-header">Edit Profile</h1>*@
         <div class="page-header">
             <input class="btn btn-primary" value="Your disciplines" type="button" onclick="@("window.location.href='" + @Url.Action("Disciplines", "Teachers") + "'");">

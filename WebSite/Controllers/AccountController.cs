@@ -42,23 +42,21 @@ namespace WebSite.Controllers
                 {
                     return View("~/Views/Error/NoDBConnection.cshtml");
                 }
-
-                var login = db.tblLogin.Single(u => u.LoginName == model.Login);
-                if (login == null)
+                try
+                {
+                    var login = db.tblLogin.Single(u => u.LoginName == model.Login);
+                }
+                catch (System.Exception)
                 {
                     ModelState.AddModelError("", "Invalid login name.");
+                    return View();
                 }
-
-           
-
                 using (MD5 md5Hash = MD5.Create())
                 {
-                    //var pass = cr.GetMd5Hash(md5Hash, model.Password); za sega ne raboti
-                    //var userToLogin = db.tblLogin.Where(u => u.LoginName == model.Login && u.Password == pass).FirstOrDefault();
                     var userToLogin = db.tblLogin.Where(u => u.LoginName == model.Login && u.Password == model.Password).FirstOrDefault();
                     if (userToLogin == null)
                     {
-                        ModelState.AddModelError("", "Invalid login name or password");
+                        ModelState.AddModelError("", "Invalid password.");
                         return View();
                     }
 

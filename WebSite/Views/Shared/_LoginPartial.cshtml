@@ -4,40 +4,49 @@
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
         @Html.AntiForgeryToken()
-
-        <ul class="nav navbar-nav navbar-right">
-            <li style="font-size: 15px">
-                <a href="@Url.Action("Calendar", "ScheduleData")"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;Schedule</a>
-            </li>
-            @if ((int)Session["CurrentUserPermissionLevel"] == 1)
-            {
-                <li style="font-size: 15px">
-                    <a href="@Url.Action("Index", "Admin")"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;&nbsp;ADMIN</a>
+        <!-- Single button -->
+        <div class="btn-group nav navbar-nav navbar-right navFont" style="padding-top:2px;">
+            <button type="button" class="btn btn-info btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                My place <span class="caret"></span>
+            </button>
+            <ul class="navFont dropdown-menu">
+                <li>
+                    <a href="@Url.Action("Calendar", "ScheduleData")"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;Schedule</a>
                 </li>
-            }
-            @if ((int)Session["CurrentUserPermissionLevel"] == 2)
-            {
-                <li style="font-size: 15px">
-                    <a href="@Url.Action("Create", "ScheduleData")" title="Addevent"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;&nbsp;Add Event</a>
+                @if ((int)Session["CurrentUserPermissionLevel"] == 1)
+                {
+                    <li>
+                        <a href="@Url.Action("Index", "Admin")"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;&nbsp;ADMIN</a>
+                    </li>
+                }
+                @if ((int)Session["CurrentUserPermissionLevel"] == 2)
+                {
+                    <li>
+                        <a href="@Url.Action("Edit", "Teachers")" title="Edit Profile"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;Edit Profile</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Create", "ScheduleData")" title="Addevent"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;&nbsp;Add Event</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "ScheduleData")" title="Editevents"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>&nbsp;&nbsp;My Events</a>
+                    </li>
+                }
+                <li role="separator" class="divider"></li>
+                <li>
+                    <a href="javascript:document.getElementById('logoutForm').submit()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;&nbsp;Sign out</a>
                 </li>
-                <li style="font-size: 15px">
-                    <a href="@Url.Action("Index", "ScheduleData")" title="Editevents"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>&nbsp;&nbsp;My Events</a>
-                </li>
-                <li style="font-size: 15px">
-                    <a href="@Url.Action("Edit", "Teachers")" title="Profile"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;Profile</a>
-                </li>
-            }
-            <li style="font-size: 15px">
-                <a href="javascript:document.getElementById('logoutForm').submit()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;&nbsp;Sign out</a>
-            </li>
-        </ul>
+            </ul>
+        </div>
     }
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li style="font-size: 15px">
+    <ul class="nav navbar-nav navbar-right navFont">
+        <li>
             <a href="@Url.Action("Login", "Account")"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;&nbsp;Sign in</a>
         </li>
     </ul>
 }
+
+
+

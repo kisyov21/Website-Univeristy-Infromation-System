@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Styles.Render("~/Content/fullcalendarcss")
@@ -27,8 +28,8 @@
                     @Html.ActionLink(" ", "Index", "Home", new { @class = "navbar-brand" })
                 </div>
                 <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink(" ", "Index", "Home", new { @class = "logo" })</li>
+                    <ul class="nav navbar-nav navFont">
+                        @*<li>@Html.ActionLink(" ", "Index", "Home", new { @class = "logo" })</li>*@
                         <li><a href="@Url.Action("Index", "Home")" title="Addevent"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;&nbsp;Home</a></li>
                         <li><a href="@Url.Action("Students", "Home")" title="Addevent"><span class="glyphicon glyphicon-education" aria-hidden="true"></span>&nbsp;&nbsp;Be one of us</a></li>
                         <li><a href="@Url.Action("About", "Home")" title="Addevent"><span class="glyphicon glyphicon-tower" aria-hidden="true"></span>&nbsp;&nbsp;About</a></li>
@@ -43,7 +44,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Technical University of Povdiv</p>
+            <p class="fontTU">&copy; @DateTime.Now.Year - Technical University of Povdiv</p>
         </footer>
     </div>
 
