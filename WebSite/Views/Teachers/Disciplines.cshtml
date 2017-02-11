@@ -6,33 +6,35 @@
 @using (Html.BeginForm("Disciplines", "Teachers", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-    <h2>Disciplines</h2>
-    <div class="form-group">
-        <label class="control-label col-md-2"> Disciplines: </label>
-        <div class="col-md-10">
-            @foreach (var item in ViewBag.disciplines)
+    <div class="container">
+        <h2 class="fontTU">Disciplines</h2>
+        <div class="form-group fontTU">
+            <label class="control-label col-md-2">List of your disciplines: </label>
+            <div class="col-md-10">
+                @foreach (var item in ViewBag.disciplines)
                 {
                     int[] array = ViewBag.Checked;
                     bool exists = array.Contains((int)item.ID);
 
                     if (exists == true)
                     {
-                    <input type="checkbox" name="disciplines" value="@item.ID" checked="checked" />    @item.Name <br />
+                        <input type="checkbox" name="disciplines" value="@item.ID" checked="checked" />    @item.Name <br />
+                    }
+                    else
+                    {
+                        <input type="checkbox" name="disciplines" value="@item.ID" />    @item.Name <br />
+                    }
                 }
-                else
-                {
-                    <input type="checkbox" name="disciplines" value="@item.ID" />    @item.Name <br />
-                }
-            }
-        </div>
-        <br />
-        <div class="form-group">
-           
-            <div class="col-md-offset-2 col-md-10">
-                <button type="button" class="btn btn-default" aria-label="Left Align" onclick="location.href='@Url.Action("Edit", "Teachers")'">
-                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;&nbsp;Back
-                </button> |
-                <input type="submit" value="Save" class="btn btn-success" />
+            </div>
+            <br />
+            <div class="form-group">
+
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="button" class="btn btn-default" aria-label="Left Align" onclick="location.href='@Url.Action("Edit", "Teachers")'">
+                        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;&nbsp;Back
+                    </button> |
+                    <input type="submit" value="Save" class="btn btn-success" />
+                </div>
             </div>
         </div>
     </div>

@@ -31,6 +31,10 @@ namespace WebSite.Controllers
 
         public ActionResult AdminPage()
         {
+            if ((int)Session["CurrentUserPermissionLevel"] != 1)
+            {
+                return View("~/Views/Shared/NoPermission.cshtml");
+            }
             return View();
         }
         // GET: Admin/Details/5
@@ -51,6 +55,10 @@ namespace WebSite.Controllers
         // GET: Admin/Create
         public ActionResult Create()
         {
+            if ((int)Session["CurrentUserPermissionLevel"] != 1)
+            {
+                return View("~/Views/Shared/NoPermission.cshtml");
+            }
             AdminViewModel model = new AdminViewModel();
             //ViewBag.TeacherID = new SelectList(db.tblTeachers, "ID", "FirstName");
             return View();
@@ -86,6 +94,10 @@ namespace WebSite.Controllers
         // GET: Admin/Edit/5
         public ActionResult Edit(int? id)
         {
+            if ((int)Session["CurrentUserPermissionLevel"] != 1)
+            {
+                return View("~/Views/Shared/NoPermission.cshtml");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -119,6 +131,10 @@ namespace WebSite.Controllers
         // GET: Admin/Delete/5
         public ActionResult Delete(int? id)
         {
+            if ((int)Session["CurrentUserPermissionLevel"] != 1)
+            {
+                return View("~/Views/Shared/NoPermission.cshtml");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

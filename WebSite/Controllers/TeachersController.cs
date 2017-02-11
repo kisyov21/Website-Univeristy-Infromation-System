@@ -24,12 +24,20 @@ namespace WebSite.Controllers
         // GET: tblTeachers
         public ActionResult Index()
         {
+            if ((int)Session["CurrentUserPermissionLevel"] != 1)
+            {
+                return View("~/Views/Shared/NoPermission.cshtml");
+            }
             return View(db.tblTeachers.ToList());
         }
 
         // GET: tblTeachers/Details/5
         public ActionResult Details(int? id)
         {
+            if ((int)Session["CurrentUserPermissionLevel"] != 1)
+            {
+                return View("~/Views/Shared/NoPermission.cshtml");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -45,6 +53,10 @@ namespace WebSite.Controllers
         // GET: tblTeachers/Create
         public ActionResult Create()
         {
+            if ((int)Session["CurrentUserPermissionLevel"] != 1)
+            {
+                return View("~/Views/Shared/NoPermission.cshtml");
+            }
             TeachersViewModel model = new TeachersViewModel();
             return View(model);
         }

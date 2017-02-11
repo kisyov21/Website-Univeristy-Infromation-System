@@ -30,6 +30,7 @@ namespace WebSite.Controllers
         // GET: tblScheduleDatas
         public ActionResult Index()
         {
+
             var tblScheduleData = db.tblScheduleData.Include(t => t.tblDisciplines).Include(t => t.tblTeachers);
             return View(tblScheduleData.ToList());
         }
@@ -52,6 +53,10 @@ namespace WebSite.Controllers
         // GET: tblScheduleDatas/Create
         public ActionResult Create()
         {
+            if ((int)Session["CurrentUserPermissionLevel"] != 2)
+            {
+                return View("~/Views/Shared/NoPermission.cshtml");
+            }
             tblScheduleData model = new tblScheduleData();
 
             int id = int.Parse(cr.CryptoOrDecrypto(Session["TeacherID"].ToString(), false));
@@ -94,7 +99,10 @@ namespace WebSite.Controllers
         // GET: tblScheduleDatas/Edit/5
         public ActionResult Edit(int? id)
         {
-
+            if ((int)Session["CurrentUserPermissionLevel"] != 2)
+            {
+                return View("~/Views/Shared/NoPermission.cshtml");
+            }
             if (id < 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -165,6 +173,10 @@ namespace WebSite.Controllers
         // GET: tblScheduleDatas/Delete/5
         public ActionResult Delete(int? id)
         {
+            if ((int)Session["CurrentUserPermissionLevel"] != 2)
+            {
+                return View("~/Views/Shared/NoPermission.cshtml");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -182,6 +194,10 @@ namespace WebSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if ((int)Session["CurrentUserPermissionLevel"] != 2)
+            {
+                return View("~/Views/Shared/NoPermission.cshtml");
+            }
             tblScheduleData tblScheduleData = db.tblScheduleData.Find(id);
             db.tblScheduleData.Remove(tblScheduleData);
             db.SaveChanges();
@@ -193,8 +209,7 @@ namespace WebSite.Controllers
         } 
 
         public ActionResult Download(int eventID)
-        {
-            
+        {            
             bool result = false;
             if (eventID >=0)
             {
@@ -233,7 +248,18 @@ namespace WebSite.Controllers
                 ScheduleViewModel temp = new ScheduleViewModel(item.ID,item.StartDate, item.EndDate, item.Type, item.Room, item.Topic, item.FilePath, item.TeacherID, item.DisciplineID);
                 data.Add(temp);
             }
-            sortedData = data.OrderBy(o => o.start).ToList();
+            if ((int)Session["CurrentUserPermissionLevel"] == 3)
+            {
+                int course = (int)Session["CurrentUserCourse"];
+                List<ScheduleViewModel> temp = new List<ScheduleViewModel>();
+                temp = data.Where(d => d.Course == course).ToList();
+                sortedData = temp.OrderBy(o => o.start).ToList();
+            }
+            else
+            {
+                sortedData = data.OrderBy(o => o.start).ToList();
+            }
+
             return Json(sortedData, JsonRequestBehavior.AllowGet);
         }
 

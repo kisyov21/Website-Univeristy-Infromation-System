@@ -88,6 +88,7 @@
         var minutes = parseInt(arr_time[1]);
         return ((hour * 60) + minutes);
     }
+
     function submitReportHandler() {
         $(".downloadBtn").onclick = function () {
             var fileID = $(this).attr('value');
@@ -128,26 +129,60 @@
             var condition = "";
 
             $(".fc-content").each(function () {
-                if ($(".fc-title", $(this)).text() == item.title && item.FilePath != null) {
-                    var id = item.id;
+                if ($(".fc-title", $(this)).text() == item.ID && item.FilePath == null) {
+                    var time = $(this).find(".fc-time");
+                    var title = $(this).find(".fc-title");
+                    time.addClass("fontTU").css("font-size", "13px").css("padding-left", "10px").css("padding-top","10px");
+                    title.addClass("fontTU").css("font-size", "17px").css("padding-left", "10px").html(item.DisciplineName);
                     $(this)
+                    .append($("<div>").css("font-size", "13px").css("padding-left", "10px").html("Room: " + item.Room + "Type: "+item.Type))
                     .prepend(
                         $("<span>")
                             .append($('<span data-toggle="tooltip" data-placement="bottom" title="Details : ' + item.title + '">').addClass("glyphicon glyphicon-info-sign btn btn-sxs btn-info btnEdit"))
                             .css("margin-top", "2px").css("margin-right", "4px").css("float", "right")
                             .click(function () {
                                 bootbox.dialog({
-                                    title: "Discipline: " + item.title + "",
+                                    title: "Discipline: " + item.DisciplineName + "",
                                     message:
                                         "<span><b>Type:</b></span><pre>" + item.Type + "</pre>" +
                                         "<span><b>Topic:</b></span><pre>" + item.Topic + "</pre>" +
                                         "<span><b>Room:</b></span><pre>" + item.Room + "</pre>" +
                                         "<span><b>Teacher:</b></span><pre>" + item.TeacherName + "</pre>" +
                                         "<span><b>Start Time:</b></span><pre>" + item.start + "</pre>" +
-                                         "<span><b>End Time:</b></span><pre>" + item.end + "</pre>" +
-                                        "<span><b>File:</b></span><pre>" + item.FilePath + "</pre>",
-                                    //onclick='download(" + id + ")
-                                    className: "shedulerClass",
+                                         "<span><b>End Time:</b></span><pre>" + item.end + "</pre>",
+                                    className: "schedulerClass",
+
+                                    buttons: {
+                                        success: {
+                                            label: "Teacher profile", className: "btn-success btn-edit", callback: function () { return dsUtil.onEditClick(item); }
+                                        }
+                                    },
+                                });
+
+                            })
+                            )
+                } else if ($(".fc-title", $(this)).text() == item.ID) {
+                    var time = $(this).find(".fc-time");
+                    var title = $(this).find(".fc-title");
+                    time.addClass("fontTU").css("font-size", "13px").css("padding-left", "10px").css("padding-top","10px");
+                    title.addClass("fontTU").css("font-size", "17px").css("padding-left", "10px").html(item.DisciplineName);
+                    $(this)
+                    .append($("<div>").css("font-size", "13px").css("padding-left", "10px").html("Room: " + item.Room + "Type: " + item.Type))
+                    .prepend(
+                        $("<span>")
+                            .append($('<span data-toggle="tooltip" data-placement="bottom" title="Details : ' + item.title + '">').addClass("glyphicon glyphicon-info-sign btn btn-sxs btn-info btnEdit"))
+                            .css("margin-top", "2px").css("margin-right", "4px").css("float", "right")
+                            .click(function () {
+                                bootbox.dialog({
+                                    title: "Discipline: " + item.DisciplineName + "",
+                                    message:
+                                        "<span><b>Type:</b></span><pre>" + item.Type + "</pre>" +
+                                        "<span><b>Topic:</b></span><pre>" + item.Topic + "</pre>" +
+                                        "<span><b>Room:</b></span><pre>" + item.Room + "</pre>" +
+                                        "<span><b>Teacher:</b></span><pre>" + item.TeacherName + "</pre>" +
+                                        "<span><b>Start Time:</b></span><pre>" + item.start + "</pre>" +
+                                         "<span><b>End Time:</b></span><pre>" + item.end + "</pre>",
+                                    className: "schedulerClass",
 
                                     buttons: {
                                         download: {
@@ -155,10 +190,12 @@
                                                 download(item.ID);
                                             }
                                         },
+
                                         success: {
                                             label: "Teacher profile", className: "btn-success btn-edit", callback: function () { return dsUtil.onEditClick(item); }
                                         }
-                                    }
+                                    },
+
                                 });
 
                             })

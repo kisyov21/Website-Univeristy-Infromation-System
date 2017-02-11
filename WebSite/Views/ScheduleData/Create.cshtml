@@ -4,7 +4,7 @@
 }
 
 
-<h2>Create</h2>
+<h2 class="fontTU">Create</h2>
 
 
 @using (Html.BeginForm())
@@ -12,12 +12,12 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>From here you can easly create upcoming lecture or exercise.</h4>
+        <h4 class="fontTU">From here you can easly create upcoming lecture or exercise.</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group">
-            <label class="control-label col-md-2"> Start: </label>
+            <label class="control-label col-md-2 fontTU"> Start: </label>
             <div class="col-md-10">
                 <div class="input-group" id="datetimepicker" style="max-width:280px;">
                     @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
@@ -30,7 +30,7 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2"> End: </label>
+            <label class="control-label col-md-2 fontTU"> End: </label>
             <div class="col-md-10">
                 <div class="input-group" id="datetimepicker2" style="max-width:280px;">
                     @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
@@ -43,7 +43,7 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2"> Discipline: </label>
+            <label class="control-label col-md-2 fontTU"> Discipline: </label>
             <div class="col-md-10">
                 <select class="selectpicker" name="discipline" id="selectMe">
                     @foreach (var item in ViewBag.Disciplines)
@@ -61,7 +61,7 @@
 
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2 fontTU" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
@@ -69,7 +69,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Room, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Room, htmlAttributes: new { @class = "control-label col-md-2 fontTU" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Room, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Room, "", new { @class = "text-danger" })
@@ -77,7 +77,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Topic, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Topic, htmlAttributes: new { @class = "control-label col-md-2 fontTU" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Topic, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Topic, "", new { @class = "text-danger" })

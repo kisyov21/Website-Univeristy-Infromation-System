@@ -234,6 +234,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Code\HtmlHelpers.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -246,7 +247,6 @@
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Controllers\ScheduleDataController.cs" />
     <Compile Include="Controllers\TeachersController.cs" />
-    <Compile Include="Controllers\ZipController.cs" />
     <Compile Include="GoogleDriveFiles.cs">
       <DependentUpon>WebSiteDB.tt</DependentUpon>
     </Compile>

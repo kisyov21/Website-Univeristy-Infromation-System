@@ -1,4 +1,6 @@
-﻿@using WebSite.Models
+﻿@using WebSite.Models,
+@using reCAPTCHA.MVC
+
 @model LoginViewModel
 @{
     ViewBag.Title = "Log in";
@@ -10,15 +12,15 @@
         <div class="alert alert-info alert-dismissable">
             <a class="panel-close close" data-dismiss="alert">×</a>
             <i class="fa fa-coffee"></i>
-            This login will only work for students and teachers who are currently part of <strong>our team</strong>. 
-</div>
+            This login will only work for students and teachers who are currently part of <strong>our team</strong>.
+        </div>
         <section id="loginForm">
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true, "", new { @class = "text-danger fontTU" })
                 <div class="form-group">
-                    <label class = "col-md-2 control-label">Login name</label>
+                    <label class="col-md-2 control-label">Login name</label>
                     <div class="col-md-10">
                         @Html.TextBoxFor(m => m.Login, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Login, "", new { @class = "text-danger fontTU" })
@@ -33,17 +35,25 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <div class="checkbox">
-                            @Html.CheckBoxFor(m => m.RememberMe)
-                            @Html.LabelFor(m => m.RememberMe)
-                        </div>
+                        @Html.Recaptcha(publicKey: "6Lf3OxUUAAAAAIYw98BNJIdu4d2yU8RRLFZP1TiG", theme: CaptchaTheme.Dark, type: CaptchaType.Image,
+                        callback: "verifyCallback", expiredCallback: "expiredCallback")
+
+                        @Html.ValidationMessage("ReCaptcha")
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Login" class="btn btn-default" />
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <div class="checkbox">
+                                @Html.CheckBoxFor(m => m.RememberMe)
+                                @Html.LabelFor(m => m.RememberMe)
+                            </div>
+                        </div>
                     </div>
-                </div>             
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Login" class="btn btn-default" />
+                        </div>
+                    </div>
             }
         </section>
     </div>
@@ -62,10 +72,15 @@
         }
         return true;
     }
+    var verifyCallback = function (response) {
+    };
 
+    var expiredCallback = function () {
+        alert("Grecaptcha is expired!");
+    };
 
-  $( function() {
-    $( document ).tooltip();
-  } );
+    $(function () {
+        $(document).tooltip();
+    });
 
 </SCRIPT>

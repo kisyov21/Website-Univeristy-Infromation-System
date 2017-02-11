@@ -1,29 +1,38 @@
 ﻿@{
-    ViewBag.Title = "Contact";
+    ViewBag.Title = "Contacts";
 }
 @section scripts{
-<script src="~/Scripts/jquery-1.10.2.js"></script>
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-<script type="text/javascript" src="~/Scripts/ViewsScripts/GoogleMapsScript.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="~/Scripts/ViewsScripts/GoogleMapsScript.js"></script>
 }
+<table>
+    <tbody>
+        <tr>
+            <td class="col-md-4">
+                <div class="fontTU">
+                    <h2>@ViewBag.Title</h2>
+                    <h3>Technical University - Sofia, Plovdiv Branch</h3>
+                    <address>
+                        25 Tsanko Diustabanov St,<br />
+                        4000 Plovdiv<br />
+                        Bulgaria<br />
+                        <abbr title="Phone">P:</abbr>
+                        (+359 32) 659 558
+                        <abbr title="Fax">F:</abbr>
+                        fax: (+359 32) 626 600
+                    </address>
 
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
-
-<div id="map_canvas" style="width: 640px; height: 440px; float:right;">
-    <meta name="referrer" content="no-referrer">
-</div>
-<address>
-    Technical University - Sofia, Plovdiv Branch<br />
-    25 Tsanko Diustabanov St,<br />
-    4000 Plovdiv<br />
-    Bulgaria<br />
-    <abbr title="Phone">P:</abbr>
-    (+359 32) 659 558
-    <abbr title="Fax">F:</abbr>
-    fax: (+359 32) 626 600
-</address>
-
-<address>
-    <strong>Official email:</strong>   <a href="branch@tu-plovdiv.bg">branch@tu-plovdiv.bg</a><br />
-</address>
+                    <address>
+                        <strong>Official email:</strong>   <a style="color:burlywood" href="branch@tu-plovdiv.bg">branch@tu-plovdiv.bg</a><br />
+                    </address>
+                </div>
+            </td>
+            <td class="col-md-6">
+                <div id="map_canvas" style="width: 640px; height: 440px; float:right;">
+                    <meta name="referrer" content="no-referrer">
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

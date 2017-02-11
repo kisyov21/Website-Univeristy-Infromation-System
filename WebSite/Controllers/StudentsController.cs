@@ -17,6 +17,10 @@ namespace WebSite.Controllers
         // GET: Students
         public ActionResult Index()
         {
+            if ((int)Session["CurrentUserPermissionLevel"] != 1)
+            {
+                return View("~/Views/Shared/NoPermission.cshtml");
+            }
             return View(db.tblStudents.ToList());
         }
 
@@ -38,6 +42,10 @@ namespace WebSite.Controllers
         // GET: Students/Create
         public ActionResult Create()
         {
+            if ((int)Session["CurrentUserPermissionLevel"] != 1)
+            {
+                return View("~/Views/Shared/NoPermission.cshtml");
+            }
             return View();
         }
 
@@ -61,6 +69,10 @@ namespace WebSite.Controllers
         // GET: Students/Edit/5
         public ActionResult Edit(int? id)
         {
+            if ((int)Session["CurrentUserPermissionLevel"] != 1)
+            {
+                return View("~/Views/Shared/NoPermission.cshtml");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -92,6 +104,10 @@ namespace WebSite.Controllers
         // GET: Students/Delete/5
         public ActionResult Delete(int? id)
         {
+            if ((int)Session["CurrentUserPermissionLevel"] != 1)
+            {
+                return View("~/Views/Shared/NoPermission.cshtml");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -109,6 +125,10 @@ namespace WebSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if ((int)Session["CurrentUserPermissionLevel"] != 1)
+            {
+                return View("~/Views/Shared/NoPermission.cshtml");
+            }
             tblStudents tblStudents = db.tblStudents.Find(id);
             db.tblStudents.Remove(tblStudents);
             db.SaveChanges();

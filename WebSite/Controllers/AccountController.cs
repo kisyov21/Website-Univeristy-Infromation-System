@@ -6,6 +6,7 @@ using WebSite.Methods;
 using System.Security.Cryptography;
 using System.Web;
 using Microsoft.Owin.Security;
+using reCAPTCHA.MVC;
 
 namespace WebSite.Controllers
 {
@@ -32,53 +33,61 @@ namespace WebSite.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [CaptchaValidator(
+        PrivateKey = "6Lf3OxUUAAAAAB2VZTBKy6R_5VprkU2MhETwqgZ4",
+        ErrorMessage = "Invalid input captcha.",
+        RequiredMessage = "The captcha field is required.")]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginViewModel model, string returnUrl)
+        public ActionResult Login(LoginViewModel model, string returnUrl, bool captchaValid)
         {
-            ViewBag.ID = "";
-            using (WebSiteDBEntities db = new WebSiteDBEntities())
+            if (ModelState.IsValid)
             {
-                if (mdb.CheckDBConnection() != true)
+                ViewBag.ID = "";
+                using (WebSiteDBEntities db = new WebSiteDBEntities())
                 {
-                    return View("~/Views/Error/NoDBConnection.cshtml");
-                }
-                try
-                {
-                    var login = db.tblLogin.Single(u => u.LoginName == model.Login);
-                }
-                catch (System.Exception)
-                {
-                    ModelState.AddModelError("", "Invalid login name.");
-                    return View();
-                }
-                using (MD5 md5Hash = MD5.Create())
-                {
-                    var userToLogin = db.tblLogin.Where(u => u.LoginName == model.Login && u.Password == model.Password).FirstOrDefault();
-                    if (userToLogin == null)
+                    if (mdb.CheckDBConnection() != true)
                     {
-                        ModelState.AddModelError("", "Invalid password.");
+                        return View("~/Views/Error/NoDBConnection.cshtml");
+                    }
+                    try
+                    {
+                        var login = db.tblLogin.Single(u => u.LoginName == model.Login);
+                    }
+                    catch (System.Exception)
+                    {
+                        ModelState.AddModelError("", "Invalid login name.");
                         return View();
                     }
-
-                    Session["CurrentUserID"] = cr.CryptoOrDecrypto(userToLogin.ID.ToString(), true);
-                    Session["CurrentUserLogin"] = cr.CryptoOrDecrypto(userToLogin.LoginName.ToString(), true);
-                    Session["CurrentUserPermissionLevel"] = userToLogin.PermissionLevel;
-                    Session["CurrentUserCourse"] = userToLogin.Course;
-
-                    if (userToLogin.TeacherID == null)
+                    using (MD5 md5Hash = MD5.Create())
                     {
-                        Session["TeacherID"] = null;
+                        var userToLogin = db.tblLogin.Where(u => u.LoginName == model.Login && u.Password == model.Password).FirstOrDefault();
+                        if (userToLogin == null)
+                        {
+                            ModelState.AddModelError("", "Invalid password.");
+                            return View();
+                        }
+
+                        Session["CurrentUserID"] = cr.CryptoOrDecrypto(userToLogin.ID.ToString(), true);
+                        Session["CurrentUserLogin"] = cr.CryptoOrDecrypto(userToLogin.LoginName.ToString(), true);
+                        Session["CurrentUserPermissionLevel"] = userToLogin.PermissionLevel;
+                        Session["CurrentUserCourse"] = userToLogin.Course;
+
+                        if (userToLogin.TeacherID == null)
+                        {
+                            Session["TeacherID"] = null;
+                        }
+                        else
+                        {
+                            Session["TeacherID"] = cr.CryptoOrDecrypto(userToLogin.TeacherID.ToString(), true);
+                            var teacher = db.tblTeachers.Where(t => t.ID == userToLogin.TeacherID).FirstOrDefault();
+                            Session["FirstName"] = cr.CryptoOrDecrypto(teacher.FirstName.ToString(), true);
+                            ViewBag.ID = teacher.ID;
+                        }
+                        return RedirectToAction("LoggedIn");
                     }
-                    else
-                    {
-                        Session["TeacherID"] = cr.CryptoOrDecrypto(userToLogin.TeacherID.ToString(), true);
-                        var teacher = db.tblTeachers.Where(t => t.ID == userToLogin.TeacherID).FirstOrDefault();
-                        Session["FirstName"] = cr.CryptoOrDecrypto(teacher.FirstName.ToString(), true);
-                        ViewBag.ID = teacher.ID;
-                    }
-                    return RedirectToAction("LoggedIn");
                 }
             }
+            return View(model);
         }
 
         [HttpGet]
@@ -160,6 +169,6 @@ namespace WebSite.Controllers
             Session.Abandon();
             return RedirectToAction("Index", "Home");
         }
-       
+
     }
 }

@@ -4,7 +4,7 @@
     ViewBag.Title = "Edit event";
 }
 
-<h2>Edit event</h2>
+<h2 class="fontTU">Edit event</h2>
 
 
 @using (Html.BeginForm("Edit", "ScheduleData", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -17,7 +17,7 @@
         @Html.HiddenFor(model => model.ID)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.start, "Start date", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.start, "Start date", htmlAttributes: new { @class = "control-label col-md-2 fontTU" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.start, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.start, "", new { @class = "text-danger" })
@@ -25,7 +25,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.end,"End date", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.end,"End date", htmlAttributes: new { @class = "control-label col-md-2 fontTU" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.end, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.end, "", new { @class = "text-danger" })
@@ -33,7 +33,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Type,"Event type", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Type,"Event type", htmlAttributes: new { @class = "control-label col-md-2 fontTU" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
@@ -41,7 +41,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Room, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Room, htmlAttributes: new { @class = "control-label col-md-2 fontTU" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Room, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Room, "", new { @class = "text-danger" })
@@ -49,7 +49,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Topic, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Topic, htmlAttributes: new { @class = "control-label col-md-2 fontTU" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Topic, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Topic, "", new { @class = "text-danger" })
@@ -57,14 +57,14 @@
         </div>
 
         <div class="form-group">
-            <label for="uploadFile" class="col-sm-2 control-label">File to upload:</label>
+            <label for="uploadFile" class="col-sm-2 control-label fontTU">File to upload:</label>
             <div class="col-md-5">
                 <input type="file" class="form-control" id="file" name="file" data-validation="required" />
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.DisciplineID, "Disciplines", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.DisciplineID, "Disciplines", htmlAttributes: new { @class = "control-label col-md-2 fontTU" })
             <div class="col-md-10">
                 @Html.DropDownList("DisciplineID", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.DisciplineID, "", new { @class = "text-danger" })

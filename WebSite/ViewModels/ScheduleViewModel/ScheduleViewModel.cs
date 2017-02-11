@@ -22,6 +22,7 @@ namespace WebSite.ViewModels.ScheduleViewModel
         public int? Course { get; set; }
         public string TeacherName { get; set; }
         public int DisciplineID { get; set; }
+        public string DisciplineName { get; set; }
 
         public ScheduleViewModel()
         {
@@ -41,8 +42,9 @@ namespace WebSite.ViewModels.ScheduleViewModel
             this.FilePath = filePath;
             this.TeacherID = teacherID;
             this.TeacherName = GetTeacherName(teacherID);
-            this.title = GetDisciplineName(disciplineID);
+            this.title = id.ToString();
             this.Course = GetCourse(disciplineID);
+            this.DisciplineName = GetDisciplineName(disciplineID);
         }
 
         //public ScheduleViewModel(int id, DateTime Start, DateTime End, string type, string room, string topic, string filePath, int teacherID, int disciplineID)
