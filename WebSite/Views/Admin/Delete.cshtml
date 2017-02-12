@@ -22,7 +22,7 @@
         @Styles.Render("~/Content/fullcalendarcss")
 
     </head>
-    <body>
+    <body style="background-image: url('background/Elegant_Background-18.jpg')">
         <div class="container body-content">
             <h2 style="color:red; font-weight:bold">Delete account</h2>
 
@@ -68,7 +68,7 @@
                     @Html.AntiForgeryToken()
 
                     <div class="form-actions no-color">
-                        <button type="button" class="btn btn-default" aria-label="Left Align" onclick="location.href='@Url.Action("Index", "Disciplines")'">
+                        <button type="button" class="btn btn-default" aria-label="Left Align" onclick="location.href='@Url.Action("Index", "Admin")'">
                             <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;&nbsp;Back
                         </button> |
                         <input type="submit" value="Delete" class="btn btn-danger" />

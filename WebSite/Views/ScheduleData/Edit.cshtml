@@ -55,14 +55,32 @@
                 @Html.ValidationMessageFor(model => model.Topic, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        @if(Model.FilePath == null || Model.FilePath=="") 
+        {
         <div class="form-group">
             <label for="uploadFile" class="col-sm-2 control-label fontTU">File to upload:</label>
             <div class="col-md-5">
                 <input type="file" class="form-control" id="file" name="file" data-validation="required" />
             </div>
         </div>
+        }
+        else
+        {
+            <div class="form-group">
+                <label class="control-label col-md-2 fontTU">File name:</label>
+                <div class="col-md-5">
+                    <label style="float:left; padding-top:7px">@Model.FilePath</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2 fontTU"></label>
+                <div class="col-md-10">
+                    <button type="button" class="btn btn-danger delete" value="@Model.ID">Delete file</button>
 
+                </div>
+            </div>
+
+        }
         <div class="form-group">
             @Html.LabelFor(model => model.DisciplineID, "Disciplines", htmlAttributes: new { @class = "control-label col-md-2 fontTU" })
             <div class="col-md-10">
@@ -73,7 +91,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save event" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -87,4 +105,33 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $('.delete').click(function () {
+            var fileID = $('.delete').attr('value');
+            deleteFile(fileID);
+        });
+        
+        function deleteFile(fileId) {
+            $.ajax({
+                url: "/ScheduleData/DeleteFile",
+                contentType: "application/json; charset=utf-8",
+                type: 'GET',
+                data: { eventID: fileId },
+                dataType: "json",
+                success: function (data) {
+                    if (data) {
+                        bootbox.alert('The file was deleted successfully');
+                        location.reload();
+                    }
+                },
+                error: function (data) {
+                    bootbox.alert('Opps..the file was not deleted successfully');
+                },
+                fail: function (data) {
+                    bootbox.alert('Opps..the file was not deleted successfully');
+                }
+            });
+
+        }
+    </script>
 }

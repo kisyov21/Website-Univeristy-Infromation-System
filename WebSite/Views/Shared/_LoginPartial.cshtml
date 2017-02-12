@@ -13,6 +13,9 @@
                 <li>
                     <a href="@Url.Action("Calendar", "ScheduleData")"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;Schedule</a>
                 </li>
+                <li>
+                    <a href="@Url.Action("Teachers", "Home")"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;&nbsp;Teachers</a>
+                </li>
                 @if ((int)Session["CurrentUserPermissionLevel"] == 1)
                 {
                     <li>

@@ -19,7 +19,7 @@
         @Styles.Render("~/Content/fullcalendarcss")
 
     </head>
-    <body>
+    <body style="background-image: url('background/Elegant_Background-18.jpg')">
         <div class="container body-content">
             <h2>Edit student</h2>
 
@@ -28,7 +28,6 @@
                 @Html.AntiForgeryToken()
 
                 <div class="form-horizontal">
-                    <h4>Login</h4>
                     <hr />
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     @Html.HiddenFor(model => model.ID)

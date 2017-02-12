@@ -105,14 +105,14 @@
             dataType: "json",
             success: function (data) {
                 if (data) {
-                    bootbox.alert('The file was downloaded successfully :)');
+                    bootbox.alert('The file was downloaded successfully on your desktop');
                 }
             },
             error: function (data) {
-                bootbox.alert('The file was not downloaded successfully :(');
+                bootbox.alert('Opps..the file was not downloaded successfully');
             },
             fail: function (data) {
-                bootbox.alert('The file was not downloaded successfully :(');
+                bootbox.alert('Opps..the file was not downloaded successfully');
             }
         });
 
@@ -129,7 +129,7 @@
             var condition = "";
 
             $(".fc-content").each(function () {
-                if ($(".fc-title", $(this)).text() == item.ID && item.FilePath == null) {
+                if ($(".fc-title", $(this)).text() == item.ID && item.FilePath == null || item.FilePath == "") {
                     var time = $(this).find(".fc-time");
                     var title = $(this).find(".fc-title");
                     time.addClass("fontTU").css("font-size", "13px").css("padding-left", "10px").css("padding-top","10px");
@@ -152,11 +152,7 @@
                                          "<span><b>End Time:</b></span><pre>" + item.end + "</pre>",
                                     className: "schedulerClass",
 
-                                    buttons: {
-                                        success: {
-                                            label: "Teacher profile", className: "btn-success btn-edit", callback: function () { return dsUtil.onEditClick(item); }
-                                        }
-                                    },
+                                    
                                 });
 
                             })
@@ -181,7 +177,8 @@
                                         "<span><b>Room:</b></span><pre>" + item.Room + "</pre>" +
                                         "<span><b>Teacher:</b></span><pre>" + item.TeacherName + "</pre>" +
                                         "<span><b>Start Time:</b></span><pre>" + item.start + "</pre>" +
-                                         "<span><b>End Time:</b></span><pre>" + item.end + "</pre>",
+                                         "<span><b>End Time:</b></span><pre>" + item.end + "</pre>"+
+                                         "<span><b>File name:</b></span><pre>" + item.FilePath + "</pre>",
                                     className: "schedulerClass",
 
                                     buttons: {
@@ -189,10 +186,6 @@
                                             label: "Download", className: "btn-default Download pull-left", callback: function () {
                                                 download(item.ID);
                                             }
-                                        },
-
-                                        success: {
-                                            label: "Teacher profile", className: "btn-success btn-edit", callback: function () { return dsUtil.onEditClick(item); }
                                         }
                                     },
 

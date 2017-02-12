@@ -6,6 +6,10 @@
     background-attachment: fixed;
 }
 
+.admin body {
+    background-image: url('background/Elegant_Background-18.jpg');
+}
+
 /* Set padding to keep content from hitting the edges */
 .body-content {
     /*padding-top: 100px;*/

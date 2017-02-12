@@ -1,12 +1,13 @@
-﻿@model IEnumerable<WebSite.tblStudents>
+﻿@model IEnumerable<WebSite.ViewModels.TeachersViewModel.TeachersViewModel>
+
 @{
-    ViewBag.Title = "Students";
+    ViewBag.Title = "Teachers";
 }
 @section Scripts
 {
     @Scripts.Render("~/bundles/searchjs")
 }
-<h2 class="fontTU">Graduated Students</h2>
+<h2 class="fontTU">Teachers</h2>
 <div class="alert alert-info alert-dismissable">
     <a class="panel-close close" data-dismiss="alert">×</a>
     <i class="fa fa-coffee"></i>
@@ -15,8 +16,8 @@
 <div class="form-group pull-right">
     <input type="text" class="search form-control" placeholder="What you looking for?">
 </div>
-<div class="tableFrame" style="clear: left; overflow: auto; height: 520px; width: 517px">
-    <table class="table table-hover table-bordered results fontTU" style="background:white; width:500px ;color:black">
+<div class="tableFrame" style="clear: left; overflow: auto; height: 560px; width: 700px">
+    <table class="table table-hover table-bordered results fontTU" style="background:white; width:682px ;color:black">
         <tbody>
             @foreach (var item in Model)
             {
@@ -25,30 +26,54 @@
                         <div class="well well-sm">
                             <div class="row">
                                 <div class="col-sm-6 col-md-4">
-                                    <img src="~/Content/Images/student.png" alt="" class="img-rounded img-responsive" />
+                                    <img src="@Url.Action("GetImage", "Teachers", new { item.ID })" alt="" class="img-rounded img-responsive" />
                                 </div>
                                 <div class="col-sm-6 col-md-8">
                                     <h4>
                                         @item.FirstName @item.LastName
                                     </h4>
                                     <p>
+                                        <i class="glyphicon glyphicon-tent"></i> Department: @item.Department
+                                        <br />
+                                    </p>
+                                    <p>
+                                        <i class="glyphicon glyphicon-education"></i> Education: @item.Education
+                                        <br />
+                                    </p>
+                                    <p>
+                                        <i class="glyphicon glyphicon-heart-empty"></i> Scientific Interests: @item.ScientificInterests
+                                        <br />
+                                    </p>
+                                    <p>
                                         <i class="glyphicon glyphicon-envelope"></i> @item.Email
                                         <br />
                                     </p>
                                     <p>
-                                        <i class="glyphicon glyphicon-star"></i> Interests: @item.Interests
+                                        <i class="glyphicon glyphicon-earphone"></i> Phone Number: @item.PhoneNumber
                                         <br />
                                     </p>
                                     <p>
-                                        <i class="glyphicon glyphicon-briefcase"></i> Employer: @item.Employer
+                                        <i class="glyphicon glyphicon-record"></i> Pesonal cabinet: @item.PersonalCabinet
                                         <br />
                                     </p>
                                     <p>
-                                        <i class="glyphicon glyphicon-user"></i> JobPosition: @item.JobPosition
+                                        <i class="glyphicon glyphicon-sunglasses"></i> Visiting Hours: @item.VisitingHours
                                         <br />
                                     </p>
+                                    <p>
+                                        <i class="glyphicon glyphicon-tasks"></i> Тeaching in: @item.Courses
+                                        <br />
+                                    </p>
+                                    <hr />
+                                    @foreach (var discpiline in item.Disciplines)
+                                    {
+                                        <p>
+                                            <i class="glyphicon glyphicon-book" style="padding-left:4px"></i> @discpiline
+                                            <br />
+                                        </p>
+                                    }
                                     <!-- Split button -->
-                                    <div class="btn-group">
+                                    @*<div class="btn-group">
                                         <button type="button" class="btn btn-primary">
                                             Social
                                         </button>
@@ -59,7 +84,7 @@
                                             <li><a href="@item.Linkedin">LinkedIn</a></li>
                                             <li><a href="@item.FacebookAcc">Facebook</a></li>
                                         </ul>
-                                    </div>
+                                    </div>*@
                                 </div>
                             </div>
                         </div>
@@ -70,3 +95,5 @@
         </tbody>
     </table>
 </div>
+
+

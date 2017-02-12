@@ -53,7 +53,7 @@ namespace WebSite.Controllers
         // GET: tblTeachers/Create
         public ActionResult Create()
         {
-            if ((int)Session["CurrentUserPermissionLevel"] != 1)
+            if ((int)Session["CurrentUserPermissionLevel"] != 2)
             {
                 return View("~/Views/Shared/NoPermission.cshtml");
             }

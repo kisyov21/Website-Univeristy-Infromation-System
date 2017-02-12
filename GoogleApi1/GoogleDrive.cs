@@ -171,12 +171,12 @@ namespace GoogleApi1
 
         }
 
-        public static bool deleteFile(DriveService _service, string _fileId)
+        public static bool deleteFile(DriveService _service, GoogleDriveFile _fileResource)
         {
             bool result;
             try
             {
-                FilesResource.DeleteRequest DeleteRequest = _service.Files.Delete(_fileId);
+                FilesResource.DeleteRequest DeleteRequest = _service.Files.Delete(_fileResource.GoogleDrive_ID);
                 DeleteRequest.Execute();
                 result = true;
             }

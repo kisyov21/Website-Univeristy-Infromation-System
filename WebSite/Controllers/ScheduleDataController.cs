@@ -198,9 +198,19 @@ namespace WebSite.Controllers
             {
                 return View("~/Views/Shared/NoPermission.cshtml");
             }
-            tblScheduleData tblScheduleData = db.tblScheduleData.Find(id);
-            db.tblScheduleData.Remove(tblScheduleData);
-            db.SaveChanges();
+            try
+            {
+                GoogleDriveFiles file = db.GoogleDriveFiles.Where(f => f.EventID == id).FirstOrDefault();
+                db.GoogleDriveFiles.Remove(file);
+                tblScheduleData tblScheduleData = db.tblScheduleData.Find(id);
+                db.tblScheduleData.Remove(tblScheduleData);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            
             return RedirectToAction("Index");
         }
         public ActionResult Calendar()
@@ -220,8 +230,39 @@ namespace WebSite.Controllers
                     string output = Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
                     var service = GoogleDrive.NewService();
                     var response = GoogleDrive.downloadFile(service, file, output);
+                   
                     result = true;
                     //TODO
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    DateTime currentTime = DateTime.Now;
+                    string _error = ex.ToString();
+                    _error = currentTime + " Exception: " + _error;
+                    var а = _error;
+                }
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult DeleteFile(int eventID)
+        {
+            bool result = false;
+            if (eventID >= 0)
+            {
+                try
+                {
+                    GoogleDriveFiles googleDriveFile = db.GoogleDriveFiles.Where(g => g.EventID == eventID).FirstOrDefault();
+                    GoogleDriveFile file = new GoogleDriveFile(googleDriveFile.Title, googleDriveFile.GoogleDrive_ID, googleDriveFile.DownloadURL, googleDriveFile.FileSize);
+                    string output = Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+                    var service = GoogleDrive.NewService();
+                    var response = GoogleDrive.deleteFile(service, file);
+                    db.GoogleDriveFiles.Remove(googleDriveFile);
+                    tblScheduleData tblScheduleData = db.tblScheduleData.Find(eventID);
+                    tblScheduleData.FilePath = "";
+                    db.Entry(tblScheduleData).State = EntityState.Modified;
+                    db.SaveChanges();
+                    result = true;
                 }
                 catch (Exception)
                 {
@@ -255,8 +296,11 @@ namespace WebSite.Controllers
                 temp = data.Where(d => d.Course == course).ToList();
                 sortedData = temp.OrderBy(o => o.start).ToList();
             }
-            else
+            else if((int)Session["CurrentUserPermissionLevel"] == 2)
             {
+                int id = int.Parse(cr.CryptoOrDecrypto(Session["CurrentUserID"].ToString(), false));
+                List<ScheduleViewModel> temp = new List<ScheduleViewModel>();
+                temp = data.Where(d => d.TeacherID == id).ToList();
                 sortedData = data.OrderBy(o => o.start).ToList();
             }
 

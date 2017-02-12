@@ -954,6 +954,7 @@
     <Content Include="Views\ScheduleData\Calendar.cshtml" />
     <Content Include="Views\ScheduleData\IndexAsync.cshtml" />
     <Content Include="UniversitySystem-c4d16256210d.p12" />
+    <Content Include="Views\Home\Teachers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

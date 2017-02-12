@@ -4,15 +4,14 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
+<h2 class="fontTU">Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>tblScheduleData</h4>
+<h3 class="fontTU">Are you sure you want to delete this?</h3>
+<div class="fontTU">
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.StartDate)
+            <label>Start date:</label>
         </dt>
 
         <dd>
@@ -20,7 +19,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.EndDate)
+            <label>End date:</label>
         </dt>
 
         <dd>
@@ -52,19 +51,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.FilePath)
+            <label>File name:</label>
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.FilePath)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Course)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Course)
         </dd>
 
         <dt>
@@ -74,23 +65,16 @@
         <dd>
             @Html.DisplayFor(model => model.tblDisciplines.Name)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.tblTeachers.FirstName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.tblTeachers.FirstName)
-        </dd>
-
     </dl>
 
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <button type="button" class="btn btn-default" aria-label="Left Align" onclick="location.href='@Url.Action("Index", "ScheduleData")'">
+                <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;&nbsp;Back
+            </button> |
+            <input type="submit" value="Delete" class="btn btn-danger" /> 
         </div>
     }
 </div>

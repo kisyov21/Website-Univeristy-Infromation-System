@@ -4,12 +4,10 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
-
 @using (Html.BeginForm("Create", "Teachers", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    <div class="container">
+    <div class="container fontTU">
         @*<h1 class="page-header">Edit Profile</h1>*@
         @*<div class="page-header">
             <input class="btn btn-primary" value="Disciplines" type="button" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");">

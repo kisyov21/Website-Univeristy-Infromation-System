@@ -33,5 +33,7 @@ namespace WebSite
         public virtual DbSet<tblTeachers> tblTeachers { get; set; }
         public virtual DbSet<tblScheduleData> tblScheduleData { get; set; }
         public virtual DbSet<GoogleDriveFiles> GoogleDriveFiles { get; set; }
+
+        public System.Data.Entity.DbSet<WebSite.ViewModels.TeachersViewModel.TeachersViewModel> TeachersViewModels { get; set; }
     }
 }

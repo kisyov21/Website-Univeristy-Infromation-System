@@ -19,7 +19,27 @@ namespace WebSite.ViewModels.TeachersViewModel
         public string PhoneNumber { get; set; }
         public string PersonalCabinet { get; set; }
         public byte[] ProfilePicture { get; set; }
-        public string Disciplines { get; set; }
+        public List<string> Disciplines { get; set; }
+        public TeachersViewModel()
+        {
+
+        }
+        public TeachersViewModel(
+            int id, string firstName, string lastName, string department, string courses,string education, string interests, string email, string visitingHours, string phoneNumber, string cabinet, List<string> disciplines)
+        {
+            this.ID = id;
+            this.FirstName = firstName;
+            this.LastName = lastName;
+            this.Department = department;
+            this.Courses = courses;
+            this.Education = education;
+            this.ScientificInterests = interests;
+            this.Email = email;
+            this.VisitingHours = visitingHours;
+            this.PhoneNumber = phoneNumber;
+            this.PersonalCabinet = cabinet;
+            this.Disciplines = disciplines;
+        }
     }
 
     public class Disciplines
